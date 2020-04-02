@@ -1,4 +1,4 @@
-package com.sangdaero.walab.user.application.DTO;
+package com.sangdaero.walab.user.application.dto;
 
 public interface SimpleUser {
 

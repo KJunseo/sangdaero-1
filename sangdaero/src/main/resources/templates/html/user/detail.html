@@ -15,16 +15,25 @@
     <hr>
     타입:
     <h3 th:if="${userInfo.userType==1}" th:text="관제사"></h3>
-    <h3 th:if="${userInfo.userType==2}" th:text="이용자"></h3>
+    <h3 th:if="${userInfo.userType==0}" th:text="이용자"></h3>
     <hr>
     봉사 시간: <h3 th:text="${userInfo.volunteerTime}"></h3>
     <hr>
     관심사:
-    <span th:each="interestName : ${userInfo.interestName}">
-        <input type="checkbox"
+<!--    <span th:each="interestName : ${userInfo.interestName}">-->
+<!--        <input type="checkbox"-->
+<!--               name="eachUserInterest"-->
+<!--               th:value="${interestName}" checked/>-->
+<!--        <label th:text="${interestName}"></label>-->
+<!--    </span>-->
+    <span th:each="interestName : ${allInterest}">
+        <span th:each="interest : ${userInfo.interestName}">
+            <input type="checkbox"
                name="eachUserInterest"
-               th:value="${interestName}" checked/>
-        <label th:text="${interestName}"></label>
+               th:value="${interestName.name}"
+                th:checked="${interestName.name.equals(interest)}"/>
+            <label th:text="${interestName.name}"></label>
+        </span>
     </span>
     <hr>
     봉사 항목: <h3 th:text="${userInfo.nickname}"></h3>

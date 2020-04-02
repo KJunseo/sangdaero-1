@@ -2,8 +2,7 @@ package com.sangdaero.walab.interest.application.service;
 
 
 import com.sangdaero.walab.interest.application.DTO.InterestDTO;
-import com.sangdaero.walab.interest.application.DTO.InterestName;
-import com.sangdaero.walab.interest.domain.entity.InterestCategory;
+import com.sangdaero.walab.common.entity.InterestCategory;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
 import org.springframework.stereotype.Service;

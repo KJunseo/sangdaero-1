@@ -1,7 +1,6 @@
-package com.sangdaero.walab.user.application.DTO;
+package com.sangdaero.walab.user.application.dto;
 
-import com.sangdaero.walab.interest.domain.entity.InterestCategory;
-import com.sangdaero.walab.user.domain.entity.User;
+import com.sangdaero.walab.common.entity.User;
 import lombok.*;
 
 import java.util.HashSet;

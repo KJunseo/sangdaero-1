@@ -5,7 +5,6 @@ import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.common.entity.UserInterest;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
 import com.sangdaero.walab.user.application.dto.SimpleUser;
-import com.sangdaero.walab.user.application.dto.UserDTO;
 import com.sangdaero.walab.user.application.dto.UserDetailDTO;
 import com.sangdaero.walab.common.entity.User;
 import com.sangdaero.walab.user.domain.repository.UserRepository;

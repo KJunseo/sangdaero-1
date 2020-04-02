@@ -1,9 +1,8 @@
 package com.sangdaero.walab.interest.application.DTO;
 
-import com.sangdaero.walab.interest.domain.entity.InterestCategory;
+import com.sangdaero.walab.common.entity.InterestCategory;
 import lombok.*;
 
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
