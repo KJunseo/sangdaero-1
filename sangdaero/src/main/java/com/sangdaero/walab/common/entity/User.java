@@ -65,7 +65,7 @@ public class User extends TimeEntity {
         this.profile=profile;
         this.socialId="21500153@handong.edu";
         this.phone=phone;
-        this.userType=2;
+        this.userType=0;
         this.status=1;
         this.volunteerTime=0;
 //        this.interests=interests;

@@ -18,21 +18,21 @@ import java.util.Optional;
 @Service
 public class BoardService {
 
-    private BoardRepository boardRepository;
+    private BoardRepository mBoardRepository;
     private static final int BLOCK_PAGE_NUM_COUNT = 5; // 블럭에 존재하는 페이지 수
     private static final int PAGE_POST_COUNT = 4;  // 한 페이지에 존재하는 게시글 수
 
     public BoardService(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
+        mBoardRepository = boardRepository;
     }
 
     public Long savePost(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
+        return mBoardRepository.save(boardDto.toEntity()).getId();
     }
 
     public List<BoardDto> getBoardlist(Integer pageNum) {
 
-        Page<Board> page = boardRepository
+        Page<Board> page = mBoardRepository
                 .findAll(PageRequest
                         .of(pageNum-1, PAGE_POST_COUNT, Sort.by(Sort.Direction.ASC, "createdDate")));
 
@@ -73,11 +73,11 @@ public class BoardService {
     }
 
     public Long getBoardCount() {
-        return boardRepository.count();
+        return mBoardRepository.count();
     }
 
     public BoardDto getPost(Long id) {
-        Optional<Board> boardWrapper = boardRepository.findById(id);
+        Optional<Board> boardWrapper = mBoardRepository.findById(id);
         Board board = boardWrapper.get();
 
         BoardDto boardDto = BoardDto.builder()
@@ -92,11 +92,11 @@ public class BoardService {
     }
 
     public void deletePost(Long id) {
-        boardRepository.deleteById(id);
+        mBoardRepository.deleteById(id);
     }
 
     public List<BoardDto> searchPosts(String keyword) {
-        List<Board> boards = boardRepository.findByTitleContaining(keyword);
+        List<Board> boards = mBoardRepository.findByTitleContaining(keyword);
         List<BoardDto> boardDtoList = new ArrayList<>();
 
         if(boards.isEmpty()) return boardDtoList;

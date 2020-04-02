@@ -19,16 +19,16 @@ import com.sangdaero.walab.common.board.service.BoardService;
 @RequestMapping("/board")
 public class BoardController {
 
-    private BoardService boardService;
+    private BoardService mBoardService;
 
     public BoardController(BoardService boardService) {
-        this.boardService = boardService;
+        mBoardService = boardService;
     }
 
     @GetMapping("")
     public String list(Model model, @RequestParam(value = "page", defaultValue = "1") Integer pageNum) {
-        List<BoardDto> boardDtoList = boardService.getBoardlist(pageNum);
-        Integer[] pageList = boardService.getPageList(pageNum);
+        List<BoardDto> boardDtoList = mBoardService.getBoardlist(pageNum);
+        Integer[] pageList = mBoardService.getPageList(pageNum);
 
         model.addAttribute("boardList", boardDtoList);
         model.addAttribute("pageList", pageList);
@@ -43,13 +43,13 @@ public class BoardController {
 
     @PostMapping("/post")
     public String write(BoardDto boardDto) {
-        boardService.savePost(boardDto);
+        mBoardService.savePost(boardDto);
         return "redirect:/board";
     }
 
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long id, Model model) {
-        BoardDto boardDto = boardService.getPost(id);
+        BoardDto boardDto = mBoardService.getPost(id);
 
         model.addAttribute("boardDto", boardDto);
         return "board/detail.html";
@@ -57,7 +57,7 @@ public class BoardController {
 
     @GetMapping("/post/edit/{no}")
     public String edit(@PathVariable("no") Long id, Model model) {
-        BoardDto boardDto = boardService.getPost(id);
+        BoardDto boardDto = mBoardService.getPost(id);
 
         model.addAttribute("boardDto", boardDto);
         return "board/update.html";
@@ -65,20 +65,20 @@ public class BoardController {
 
     @PutMapping("/post/edit/{no}")
     public String update(BoardDto boardDto) {
-        boardService.savePost(boardDto);
+        mBoardService.savePost(boardDto);
         return "redirect:/board";
     }
 
     @DeleteMapping("/post/{no}")
     public String delete(@PathVariable("no") Long id) {
-        boardService.deletePost(id);
+        mBoardService.deletePost(id);
 
         return "redirect:/board";
     }
 
     @GetMapping("/search")
     public String search(@RequestParam(value = "keyword") String keyword, Model model) {
-        List<BoardDto> boardDtoList = boardService.searchPosts(keyword);
+        List<BoardDto> boardDtoList = mBoardService.searchPosts(keyword);
         model.addAttribute("boardList", boardDtoList);
 
         return "board/list.html";
