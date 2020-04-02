@@ -1,8 +1,7 @@
-package com.sangdaero.walab.user.domain.entity;
+package com.sangdaero.walab.common.entity;
 
 import com.sangdaero.walab.common.board.domain.entity.TimeEntity;
 
-import com.sangdaero.walab.mapper.entity.UserInterest;
 import lombok.*;
 
 import javax.persistence.*;
