@@ -2,6 +2,7 @@ package com.sangdaero.walab.interest.application.service;
 
 
 import com.sangdaero.walab.interest.application.DTO.InterestDTO;
+import com.sangdaero.walab.interest.application.DTO.InterestName;
 import com.sangdaero.walab.common.entity.InterestCategory;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
@@ -38,8 +39,8 @@ public class InterestService {
                     .name(interestCategory.getName())
                     .type(interestCategory.getType())
                     .on_off(interestCategory.getOn_off())
-                    .createdDate(interestCategory.getCreatedDate())
-                    .modifiedDate(interestCategory.getModifiedDate())
+                    .createdDate(interestCategory.getRegDate())
+                    .modifiedDate(interestCategory.getModDate())
                     .count(mUserInterestRepository.countByInterest_Id(interestCategory.getId()))
                     .build();
 

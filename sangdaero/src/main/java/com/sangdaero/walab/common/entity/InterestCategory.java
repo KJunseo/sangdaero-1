@@ -1,6 +1,6 @@
 package com.sangdaero.walab.common.entity;
 
-import com.sangdaero.walab.common.board.domain.entity.TimeEntity;
+import com.sangdaero.walab.common.entity.UserInterest;
 import lombok.*;
 
 import javax.persistence.*;

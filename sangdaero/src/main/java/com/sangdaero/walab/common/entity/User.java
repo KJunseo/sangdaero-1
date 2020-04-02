@@ -1,21 +1,29 @@
 package com.sangdaero.walab.common.entity;
 
-import com.sangdaero.walab.common.board.domain.entity.TimeEntity;
-
-import lombok.*;
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.sangdaero.walab.common.entity.UserInterest;
+
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter
 @Setter
-@NoArgsConstructor
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends TimeEntity {
 
-    @Id @GeneratedValue
+	@Id @GeneratedValue
     private Long id;
 
     private String name;
@@ -50,7 +58,7 @@ public class User extends TimeEntity {
     private LocalDateTime lastLogin;
 
     private Byte isDelete;
-
+	
     @Builder
     public User(Long id, String name, String nickname, String profile, String socialId,
                 String phone, Byte userType, Byte status, Integer volunteerTime,
@@ -62,12 +70,12 @@ public class User extends TimeEntity {
         this.name=name;
         this.nickname=nickname;
         this.profile=profile;
-        this.socialId="21500153@handong.edu";
+        this.socialId=socialId;
         this.phone=phone;
         this.userType=0;
         this.status=1;
         this.volunteerTime=0;
-//        this.interests=interests;
+        //this.interests=interests;
         this.service=service;
         this.memo=memo;
         this.locationAgree=0;
@@ -76,4 +84,6 @@ public class User extends TimeEntity {
         this.lastLogin=lastLogin;
         this.isDelete=0;
     }
+	
+	
 }

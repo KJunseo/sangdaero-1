@@ -2,9 +2,12 @@ package com.sangdaero.walab.interest.controller;
 
 import com.sangdaero.walab.interest.application.DTO.InterestDTO;
 import com.sangdaero.walab.interest.application.service.InterestService;
+import com.sangdaero.walab.user.application.dto.SimpleUser;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 

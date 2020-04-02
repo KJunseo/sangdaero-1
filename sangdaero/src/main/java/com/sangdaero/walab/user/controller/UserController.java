@@ -1,9 +1,11 @@
 package com.sangdaero.walab.user.controller;
 
+import com.sangdaero.walab.common.board.dto.BoardDto;
 import com.sangdaero.walab.interest.application.DTO.InterestDTO;
 import com.sangdaero.walab.interest.application.service.InterestService;
 import com.sangdaero.walab.user.application.dto.SimpleUser;
-import com.sangdaero.walab.user.application.dto.UserDetailDTO;
+import com.sangdaero.walab.user.application.dto.UserDto;
+import com.sangdaero.walab.user.application.dto.UserDetailDto;
 import com.sangdaero.walab.user.application.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,17 +43,15 @@ public class UserController {
 	}
 
 	@PostMapping("/add")
-	public String addUser(UserDTO userDTO) {
+	public String addUser(UserDto userDTO) {
 		mUserService.addUser(userDTO);
 		return "redirect:/user";
 	}
 
 	@GetMapping("/add/{id}")
 	public String detail(@PathVariable Long id, Model model) {
-		UserDetailDTO userDetailDTO = mUserService.getUser(id);
-		List<InterestDTO> allInterest = mInterestService.getInterestList();
+		UserDetailDto userDetailDTO = mUserService.getUser(id);
 		model.addAttribute("userInfo", userDetailDTO);
-		model.addAttribute("allInterest", allInterest);
 
 		return "html/user/detail.html";
 	}
