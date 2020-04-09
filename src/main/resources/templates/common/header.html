@@ -47,6 +47,11 @@ function w3_open() {
 	        
 	        if(data.userType != 1){
 	        	$('a.menu').hide();
+	        	
+	        	if(window.location.pathname != "/"){
+	        		window.location.replace("/");	
+	        	}
+	        	
 	        }
 	        
 	        if(data.status == 0){

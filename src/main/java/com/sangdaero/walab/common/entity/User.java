@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.sangdaero.walab.common.entity.UserInterest;
 
@@ -17,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends TimeEntity {
 
 	@Id @GeneratedValue
@@ -33,7 +37,6 @@ public class User extends TimeEntity {
 
     private String phone;
 
-    @Column(columnDefinition = "tinyint default 1")
     private Byte userType;
 
     private Byte status;
@@ -71,13 +74,13 @@ public class User extends TimeEntity {
         this.socialId=socialId;
         this.phone=phone;
         this.userType=userType;
-        this.status=1;
-        this.volunteerTime=0;
+        this.status=status;
+        this.volunteerTime=volunteerTime;
         //this.interests=interests;
         this.service=service;
         this.memo=memo;
-        this.locationAgree=0;
-        this.phoneAgree=0;
+        this.locationAgree=locationAgree;
+        this.phoneAgree=phoneAgree;
         this.community=community;
         this.lastLogin=lastLogin;
         this.isDelete=0;
