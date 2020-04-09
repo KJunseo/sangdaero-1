@@ -84,6 +84,8 @@ public class UserService extends OidcUserService {
 
     public void addUser(UserDto userDTO) {
 
+        mUserInterestRepository.deleteByUser_Id(userDTO.getId());
+
         for (String e :userDTO.getUserInterestList()) {
             InterestCategory interestList = mInterestRepository.findByNameEquals(e);
             userDTO.getInterests().add(interestList);

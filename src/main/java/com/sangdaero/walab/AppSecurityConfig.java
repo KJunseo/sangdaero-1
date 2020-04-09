@@ -13,41 +13,42 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.sangdaero.walab.user.application.service.UserService;
 
+
 @Configuration
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	private UserService mUserService;
-	
-	public AppSecurityConfig(UserService userService) {
-		mUserService = userService;
-	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		
+    private UserService mUserService;
+
+    public AppSecurityConfig(UserService userService) {
+        mUserService = userService;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+
 		/*http
 			.antMatcher("/**").authorizeRequests()
 			.antMatchers("/").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.oauth2Login();*/
-		
-		http
-        .authorizeRequests(a -> a
-        		.antMatchers("/","/error").permitAll()
-        		.anyRequest().authenticated()
-        )
-        .logout(l -> l
-        		.logoutSuccessUrl("/").permitAll()
-        )
-        .csrf().disable()
-        .oauth2Login()
-        .userInfoEndpoint()
-        .oidcUserService(mUserService);
-		
-	}
-	
-	@Bean
+
+        http
+                .authorizeRequests(a -> a
+                        .antMatchers("/","/error").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .logout(l -> l
+                        .logoutSuccessUrl("/").permitAll()
+                )
+                .csrf().disable()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .oidcUserService(mUserService);
+
+    }
+
+    @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
@@ -59,6 +60,4 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-	
-	
 }
