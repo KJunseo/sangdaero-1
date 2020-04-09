@@ -4,10 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import com.sangdaero.walab.common.entity.UserInterest;
 
@@ -36,6 +33,7 @@ public class User extends TimeEntity {
 
     private String phone;
 
+    @Column(columnDefinition = "tinyint default 1")
     private Byte userType;
 
     private Byte status;
@@ -72,7 +70,7 @@ public class User extends TimeEntity {
         this.profile=profile;
         this.socialId=socialId;
         this.phone=phone;
-        this.userType=0;
+        this.userType=userType;
         this.status=1;
         this.volunteerTime=0;
         //this.interests=interests;

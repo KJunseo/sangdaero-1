@@ -1,11 +1,7 @@
 package com.sangdaero.walab.user.application.service;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import com.sangdaero.walab.common.entity.InterestCategory;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
@@ -109,7 +105,6 @@ public class UserService extends OidcUserService {
         List<SimpleUser> simpleUserList = mUserRepository.findAllByOrderByName();
         return simpleUserList;
     }
-
 
     public UserDetailDto getUser(Long id) {
         Optional<User> userWrapper = mUserRepository.findById(id);
