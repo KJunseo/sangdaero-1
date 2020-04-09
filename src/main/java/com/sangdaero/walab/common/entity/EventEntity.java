@@ -124,5 +124,4 @@ public class EventEntity extends TimeEntity {
 		this.evaluate = evaluate;
 		this.deadline = deadline;
 	}
-	
 }
