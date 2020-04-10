@@ -92,9 +92,12 @@ public class UserService extends OidcUserService {
 
         mUserInterestRepository.deleteByUser_Id(userDTO.getId());
 
-        for (String e :userDTO.getUserInterestList()) {
-            InterestCategory interestList = mInterestRepository.findByNameEquals(e);
-            userDTO.getInterests().add(interestList);
+        if(userDTO.getUserInterestList()!=null) {
+
+            for (String e :userDTO.getUserInterestList()) {
+                InterestCategory interestList = mInterestRepository.findByNameEquals(e);
+                userDTO.getInterests().add(interestList);
+            }
         }
 
         User user = mUserRepository.save(userDTO.toEntity());

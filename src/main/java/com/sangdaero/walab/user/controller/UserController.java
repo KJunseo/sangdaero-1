@@ -44,6 +44,7 @@ public class UserController {
 
 	@PostMapping("/add")
 	public String addUser(UserDto userDTO) {
+		userDTO.setUserType((byte)0);
 		mUserService.addUser(userDTO);
 		return "redirect:/user";
 	}
@@ -70,7 +71,9 @@ public class UserController {
 
 	@PutMapping("/edit/{id}")
 	public String update(@RequestParam(value = "interest", required = false) List<String> interest, UserDto userDto) {
-		userDto.setUserInterestList(interest.toArray(new String[0]));
+		if(interest!=null) {
+			userDto.setUserInterestList(interest.toArray(new String[0]));
+		}
 
 		mUserService.addUser(userDto);
 		return "redirect:/user";
