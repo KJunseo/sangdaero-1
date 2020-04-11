@@ -118,6 +118,13 @@ public class UserService extends OidcUserService {
         return simpleUserList;
     }
 
+    public List<SimpleUser> getUserRankingList() {
+//        List<SimpleUser> userRankingList = mUserRepository.findAllByOrderByVolunteerTimeDesc();
+        List<SimpleUser> userRankingList = mUserRepository.findTop5ByOrderByVolunteerTimeDesc();
+
+        return userRankingList;
+    }
+
     public UserDetailDto getUser(Long id) {
         Optional<User> userWrapper = mUserRepository.findById(id);
 
@@ -157,5 +164,6 @@ public class UserService extends OidcUserService {
                 .status(user.getStatus())
                 .build();
     }
+
 
 }

@@ -49,7 +49,7 @@ public class UserController {
 		return "redirect:/user";
 	}
 
-	@GetMapping("/add/{id}")
+	@GetMapping("/detail/{id}")
 	public String detail(@PathVariable Long id, Model model) {
 		UserDetailDto userDetailDTO = mUserService.getUser(id);
 

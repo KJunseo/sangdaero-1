@@ -32,7 +32,7 @@
     <!-- CONTENTS !-->
     <tr th:each="userInfo : ${simpleUserList}">
       <td>
-        <a th:href="@{'/user/add/' + ${userInfo.id}}">
+        <a th:href="@{'/user/detail/' + ${userInfo.id}}">
           <span th:text="${userInfo.name}"></span>
         </a>
       </td>
