@@ -23,7 +23,7 @@ public class RankingController {
 	public String rankingPage(Model model) {
 		List<SimpleUser> userRanking = mUserService.getUserRankingList();
 		model.addAttribute("userRanking", userRanking);
-		return "html/ranking/ranking.html";
+		return "html/ranking/ranking";
 	}
 
 }
