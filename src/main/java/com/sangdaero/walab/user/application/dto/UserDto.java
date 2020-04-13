@@ -29,6 +29,7 @@ public class UserDto {
     private String socialId;
     private Byte userType;
     private Byte status;
+    private Integer volunteerTime;
     private String[] userInterestList;
     private Set<InterestCategory> interests = new HashSet<>();
 
@@ -41,12 +42,13 @@ public class UserDto {
                 .socialId(socialId)
                 .userType(userType)
                 .status(status)
+                .volunteerTime(volunteerTime)
                 .build();
         return user;
     }
 
     @Builder
-    public UserDto(Long id, String name, String nickname, String phone, String socialId, Byte userType, Byte status) {
+    public UserDto(Long id, String name, String nickname, String phone, String socialId, Byte userType, Byte status, Integer volunteerTime) {
         this.id=id;
         this.name=name;
         this.nickname=nickname;
@@ -54,6 +56,7 @@ public class UserDto {
         this.socialId = socialId;
         this.userType = userType;
         this.status = status;
+        this.volunteerTime = volunteerTime;
     }
 
 }

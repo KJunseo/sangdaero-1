@@ -52,6 +52,7 @@ public class UserController {
 			return "html/user/add";
 		}
 
+		userDTO.setVolunteerTime(0);
 		userDTO.setUserType((byte)0);
 		mUserService.addUser(userDTO);
 		return "redirect:/user";
