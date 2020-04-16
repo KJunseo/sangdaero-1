@@ -10,8 +10,7 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @EnableJpaAuditing
 @SpringBootApplication
-//public class WalabApplication extends SpringBootServletInitializer {
-public class WalabApplication {
+public class WalabApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(WalabApplication.class, args);
@@ -21,10 +20,5 @@ public class WalabApplication {
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new HiddenHttpMethodFilter();
     }
-
-//	@Override
-//	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-//		return builder.sources(WalabApplication.class);
-//	}
 
 }
