@@ -55,7 +55,7 @@ public class UserService extends OidcUserService {
         if(user == null) {
         	userDto.setNickname("닉네임");
         	userDto.setPhone("010-XXXX-XXXX");
-            userDto.setUserType((byte) 0);
+            userDto.setUserType((byte) 1); // TODO 나중에 0(이용자)로 바꿔야 함
             userDto.setStatus((byte) 1);
             user = userDto.toEntity(); 
             user.setLocationAgree((byte) 0);
@@ -192,6 +192,4 @@ public class UserService extends OidcUserService {
                 .status(user.getStatus())
                 .build();
     }
-
-
 }

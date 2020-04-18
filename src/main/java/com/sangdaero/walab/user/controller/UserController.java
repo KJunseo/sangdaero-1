@@ -48,9 +48,11 @@ public class UserController {
 						   @RequestParam(value = "keyword", defaultValue = "") String keyword,
 						   @RequestParam(value = "condition", defaultValue = "0") Integer condition) {
 		Page<User> userPageList = mUserService.getSimpleUserPageList(pageable, keyword, condition);
+		Long totalNum = userPageList.getTotalElements();
 		model.addAttribute("simpleUserList", userPageList);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("condition",condition);
+		model.addAttribute("totalNum", totalNum);
 //		List<SimpleUser> simpleUsers = mUserService.getSimpleUserList();
 //		model.addAttribute("simpleUserList", simpleUsers);
 		return "html/user/user";
@@ -116,7 +118,7 @@ public class UserController {
 
 	@GetMapping("/data")
 	public String generateTestData() {
-		for(int i=0;i<100;i++) {
+		for(int i=0;i<35;i++) {
 			String randomName = RandomString.make(3);
 			String randomNickname = RandomString.make(5);
 			double r = Math.random();
