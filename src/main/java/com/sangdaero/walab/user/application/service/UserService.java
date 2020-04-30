@@ -9,6 +9,7 @@ import com.sangdaero.walab.common.entity.*;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserEventRepository;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
+import com.sangdaero.walab.ranking.service.RankingService;
 import com.sangdaero.walab.request.domain.repository.RequestRepository;
 import com.sangdaero.walab.user.application.dto.SimpleUser;
 import com.sangdaero.walab.user.application.dto.UserDetailDto;
@@ -210,9 +211,17 @@ public class UserService extends OidcUserService {
 //        return userRankingList;
 //    }
 
-    public List<VolunteerRanking> getMonthlyRanking(int scope) {
-        LocalDateTime currentDate = LocalDateTime.now();
-        LocalDateTime endDate = LocalDateTime.now().plusDays(7);
+    public List<VolunteerRanking> getRanking(int scope) {
+        LocalDateTime currentDate=LocalDateTime.now();
+        LocalDateTime endDate=LocalDateTime.now();
+
+        if(scope==3) {
+            currentDate = LocalDateTime.parse(RankingService.getCurMonday()+"T00:00:00");
+            endDate = LocalDateTime.parse(RankingService.getCurSunday()+"T23:59:59");
+        } else if(scope==2) {
+            currentDate = LocalDateTime.parse(RankingService.getFirstDayMonth()+"T00:00:00");
+            endDate = LocalDateTime.parse(RankingService.getLastDayMonth()+"T23:59:59");
+        }
 
         List<EventEntity> list = mRequestRepository.findAllByStatusAndStartTimeGreaterThanEqualAndEndTimeLessThanEqual((byte)scope, currentDate, endDate);
         Map<Long, Integer> map = new HashMap<>();

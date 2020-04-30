@@ -28,10 +28,8 @@ public class RankingController {
 		List<VolunteerRanking> userRanking = mUserService.getVolunteerRankingList();
 
 		// 월간
-		if(scope==2) {
-			userRanking = mUserService.getMonthlyRanking(scope);
-		} else if(scope==3) { // 주간
-			//userRanking = mUserService.getWeeklyRanking(scope);
+		if(scope==2 || scope==3) {
+			userRanking = mUserService.getRanking(scope);
 		}
 
 		model.addAttribute("userRanking", userRanking);
