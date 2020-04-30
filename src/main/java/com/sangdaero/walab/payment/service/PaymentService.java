@@ -129,7 +129,7 @@ public class PaymentService {
 				.eventCategory(eventEntity.getEventCategory())
 				.donator(eventEntity.getDonator())
 				.content(eventEntity.getContent())
-				.manager(eventEntity.getManager())
+//				.manager(eventEntity.getManager())
 				.selectSupport(eventEntity.getSelectSupport())
 				.billType(eventEntity.getBillType())
 				.donatorPhone(eventEntity.getDonatorPhone())

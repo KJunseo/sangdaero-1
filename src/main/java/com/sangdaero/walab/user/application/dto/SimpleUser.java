@@ -11,4 +11,5 @@ public interface SimpleUser {
     Byte getUserType();
 
     Integer getVolunteerTime();
+
 }

@@ -1,5 +1,7 @@
 package com.sangdaero.walab.request.domain.repository;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +30,5 @@ public interface RequestRepository extends JpaRepository<EventEntity, Long> {
 	@EntityGraph(attributePaths = { "volunteers", "interestCategory", "userTaker" })
 	Optional<EventEntity> getById(Long id);
 
+	List<EventEntity> findAllByStatusAndStartTimeGreaterThanEqualAndEndTimeLessThanEqual(byte scope, LocalDateTime currentDate, LocalDateTime endDate);
 }

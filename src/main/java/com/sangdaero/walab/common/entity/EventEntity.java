@@ -34,38 +34,33 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventEntity extends TimeEntity {
 
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 255, nullable = true)
 	private String title;
-	
+
 	@ColumnDefault("0")
 	private Byte status;
 
 	@Column(name="event_category", nullable=false)
 	private Integer eventCategory;
-	
-	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, 
+
+	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE,
 			CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name="interest_category", nullable=true)
 	private InterestCategory interestCategory;
-	
+
 	@Column(length = 255, nullable = true)
 	private String userName;
-	
-	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, 
-			CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name="user_taker", nullable=true)
-	private User userTaker;
-	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="event_id")
-	private List<UserEventMapper> volunteers;
 
-	@ColumnDefault("0")
-	private Long manager;
+	@OneToMany(mappedBy="event")
+	private List<UserEventMapper> userEventList;
+
+	@ManyToOne()
+	@JoinColumn(name="manager", nullable=true)
+	private User manager;
 
 	@Column(length = 255)
 	private String place;
@@ -127,7 +122,7 @@ public class EventEntity extends TimeEntity {
 		this.status = status;
 		this.eventCategory = eventCategory;
 		this.userName = userName;
-		this.manager = manager;
+//		this.manager = manager;
 		this.place = place;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -145,5 +140,5 @@ public class EventEntity extends TimeEntity {
 		this.evaluate = evaluate;
 		this.deadline = deadline;
 	}
-	
+
 }

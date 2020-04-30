@@ -155,7 +155,7 @@ public class RequestService {
     	EventEntity event = requestDto.toEntity();
     	
     	event.setInterestCategory(interestCategory);
-    	event.setUserTaker(userTaker);
+//    	event.setUserTaker(userTaker);
     	
 		return mRequestRepository.save(event).getId();
 	}
@@ -167,11 +167,11 @@ public class RequestService {
 					.id(eventEntity.getId())
 					.title(eventEntity.getTitle())
 					.status(eventEntity.getStatus())
-					.userName(eventEntity.getUserName())
-					.userTaker(eventEntity.getUserTaker())
+//					.userName(eventEntity.getUserName())
+//					.userTaker(eventEntity.getUserTaker())
 					.interestCategory(eventEntity.getInterestCategory())
-					.volunteers(eventEntity.getVolunteers())
-					.manager(eventEntity.getManager())
+//					.volunteers(eventEntity.getVolunteers())
+//					.manager(eventEntity.getManager())
 					.place(eventEntity.getPlace())
 					.startTime(eventEntity.getStartTime())
 					.endTime(eventEntity.getEndTime())
