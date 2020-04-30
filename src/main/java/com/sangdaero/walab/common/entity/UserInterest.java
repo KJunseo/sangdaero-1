@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @IdClass(UserInterestId.class)
-public class UserInterest extends TimeEntity {
+public class UserInterest {
 
     @Id
     @ManyToOne

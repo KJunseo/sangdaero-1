@@ -33,7 +33,7 @@ public class NoticeController extends CategoryController {
 	public String list(
 			Model model,
 			@RequestParam(value = "page", defaultValue = "1") Integer pageNum,
-			@RequestParam(value = "category", defaultValue = "1") Long category,
+			@RequestParam(value = "category", defaultValue = "0") Long category,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "type", defaultValue = "0") Integer searchType) {
 		
@@ -54,7 +54,11 @@ public class NoticeController extends CategoryController {
 
 	// Writing notice page
 	@GetMapping("/post")
-    public String write() {
+    public String write(Model model) {
+		List<CategoryDto> categoryDtoList = mNoticeService.getCategory((byte)1);
+		
+		model.addAttribute("categoryDto", categoryDtoList);
+		
         return "html/notice/write.html";
     }
 
@@ -69,29 +73,8 @@ public class NoticeController extends CategoryController {
     @GetMapping("/post/{no}")
     public String detail(@PathVariable("no") Long id, Model model) {
         NoticeDto noticeDto = mNoticeService.getPost(id);
-        
-        // Category with Korean which shows to detail page
-        String category;
-        
-        // 수정 필요
-        switch(noticeDto.getCategoryId().toString()) {
-	        case "1":
-	        	category = "전체";
-	        	break;
-	        case "2":
-	        	category = "자원봉사자";
-	        	break;
-	        case "3":
-	        	category = "이용자";
-	        	break;
-	        default:
-	        	category = "에러";
-	        	break;
-        }
 
         model.addAttribute("noticeDto", noticeDto);
-        model.addAttribute("category", category);
-        
         
         return "html/notice/detail.html";
     }

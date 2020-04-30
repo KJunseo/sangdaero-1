@@ -7,7 +7,7 @@ import java.util.*;
 
 import com.sangdaero.walab.common.entity.*;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
-import com.sangdaero.walab.mapper.repository.UserEventRepository;
+import com.sangdaero.walab.mapper.repository.UserEventMapperRepository;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
 import com.sangdaero.walab.ranking.service.RankingService;
 import com.sangdaero.walab.request.domain.repository.RequestRepository;
@@ -36,7 +36,7 @@ public class UserService extends OidcUserService {
     private final UserRepository mUserRepository;
     private final UserInterestRepository mUserInterestRepository;
     private final RequestRepository mRequestRepository;
-    private final UserEventRepository mUserEventRepository;
+    private final UserEventMapperRepository mUserEventMapperRepository;
 	
 	@Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
@@ -227,13 +227,13 @@ public class UserService extends OidcUserService {
         Map<Long, Integer> map = new HashMap<>();
 
         for(EventEntity event : list) {
-            // TODO 이벤트 아이디로 -> 봉사자 리스트 가져오기
+            // 이벤트 아이디로 -> 봉사자 리스트 가져오기
             Long id = event.getId();
 
-            List<UserEventMapper> eventList = mUserEventRepository.findAllByUserTypeAndEvent_id((byte) 1, id);
+            List<UserEventMapper> eventList = mUserEventMapperRepository.findAllByUserTypeAndEvent_id((byte) 1, id);
 
-            // TODO 가져온 봉사자 리스트 없는 유저면 map에 추가
-            // TODO 있는 유저면 누적합
+            // 가져온 봉사자 리스트 없는 유저면 map에 추가
+            // 있는 유저면 누적합
             for(UserEventMapper a : eventList) {
                 LocalTime start = a.getEvent().getStartTime().toLocalTime();
                 LocalTime end = a.getEvent().getEndTime().toLocalTime();
@@ -256,6 +256,13 @@ public class UserService extends OidcUserService {
         }
 
         return result;
+    }
+
+    public User findUserEntity(Long id) {
+        Optional<User> userData = mUserRepository.findById(id);
+        User user = userData.get();
+
+        return user;
     }
 
 }

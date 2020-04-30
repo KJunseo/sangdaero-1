@@ -1,6 +1,7 @@
 package com.sangdaero.walab.common.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -19,6 +22,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,31 +38,28 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventEntity extends TimeEntity {
 
-	@Id
+	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(length = 255, nullable = true)
 	private String title;
-
+	
 	@ColumnDefault("0")
 	private Byte status;
 
 	@Column(name="event_category", nullable=false)
 	private Integer eventCategory;
-
-	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE,
+	
+	@ManyToOne(cascade= {CascadeType.DETACH, CascadeType.MERGE, 
 			CascadeType.PERSIST, CascadeType.REFRESH})
 	@JoinColumn(name="interest_category", nullable=true)
 	private InterestCategory interestCategory;
-
-	@Column(length = 255, nullable = true)
-	private String userName;
-
+	
 	@OneToMany(mappedBy="event")
 	private List<UserEventMapper> userEventList;
 
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name="manager", nullable=true)
 	private User manager;
 
@@ -112,8 +113,8 @@ public class EventEntity extends TimeEntity {
 	private LocalDateTime deadline;
 
 	@Builder
-	public EventEntity(Long id, String title, Byte status, Integer eventCategory, String userName, Long manager,
-			String place, LocalDateTime startTime, LocalDateTime endTime, String content, Byte deliveryFlag,
+	public EventEntity(Long id, String title, Byte status, Integer eventCategory, User manager,
+			String place,  LocalDateTime startTime, LocalDateTime endTime, String content, Byte deliveryFlag,
 			Byte phoneAgree, String donator, Byte selectSupport, Integer donationPrice, Byte billType,
 			Byte paymentCheck, String donatorName, String donatorPhone, String businessPicture, String evaluate,
 			LocalDateTime deadline) {
@@ -121,8 +122,7 @@ public class EventEntity extends TimeEntity {
 		this.title = title;
 		this.status = status;
 		this.eventCategory = eventCategory;
-		this.userName = userName;
-//		this.manager = manager;
+		this.manager = manager;
 		this.place = place;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -140,5 +140,5 @@ public class EventEntity extends TimeEntity {
 		this.evaluate = evaluate;
 		this.deadline = deadline;
 	}
-
+	
 }
