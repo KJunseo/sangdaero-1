@@ -30,6 +30,7 @@ public class InterestController {
 		List<InterestDto> interestDTOList = mInterestService.getInterestList();
 		model.addAttribute("interestList", interestDTOList);
 		model.addAttribute(new InterestDto());
+		model.addAttribute("mod_interest", new InterestDto());
 		return "html/interest/interest";
 	}
 
@@ -57,10 +58,17 @@ public class InterestController {
 	}
 
 	@PutMapping("/edit/{id}")
-	public String update(InterestDto interestDTO) {
+	public String update(InterestDto interestDTO, Model model) {
 		System.out.println(interestDTO);
 		mInterestService.addInterest(interestDTO);
-		return "redirect:/interest";
+
+		List<InterestDto> interestDTOList = mInterestService.getInterestList();
+		model.addAttribute("interestList", interestDTOList);
+		model.addAttribute(new InterestDto());
+		model.addAttribute("mod_interest", new InterestDto());
+
+		return "html/interest/interest";
+		//return "redirect:/interest";
 	}
 
 	@DeleteMapping("/{id}")
