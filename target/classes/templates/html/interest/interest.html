@@ -45,7 +45,7 @@
                         <span th:text="${interestStat.index}+1"></span>
                     </th>
                     <td>
-                        <form class="needs-validation col-sm-7" th:action="@{'/interest/edit/' + ${interest.id}}" th:object="${mod_interest}" method="post" novalidate>
+                        <form class="needs-validation col-sm-7" th:action="@{'/interest/edit/' + ${interest.id}}" th:object="${mod_interest}" th:method="post" novalidate>
                             <input type="hidden" name="_method" value="put"/>
                             <input type="hidden" name="id" th:value="${interest.id}"/>
 
