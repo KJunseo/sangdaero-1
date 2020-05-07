@@ -47,7 +47,7 @@
                     <td>
                         <form class="needs-validation col-sm-7" th:action="@{'/interest/edit/' + ${interest.id}}" th:object="${mod_interest}" th:method="post" novalidate>
                             <input type="hidden" name="_method" value="put"/>
-                            <input type="hidden" name="id" th:value="${interest.id}"/>
+<!--                            <input type="hidden" name="id" th:value="${interest.id}"/>-->
 
                             <div class="row">
                                 <div class="form-group">
