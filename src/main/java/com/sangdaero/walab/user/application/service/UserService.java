@@ -28,7 +28,10 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService extends OidcUserService {
 	
@@ -265,4 +268,16 @@ public class UserService extends OidcUserService {
         return user;
     }
 
+    public void addInterest(Long id, InterestCategory interest) {
+        User user = mUserRepository.getOne(id);
+        UserInterest userInterest = new UserInterest();
+        userInterest.setUser(user);
+        userInterest.setInterest(interest);
+
+        mUserInterestRepository.save(userInterest);
+    }
+
+    public void removeInterest(Long id, InterestCategory interest) {
+        mUserInterestRepository.deleteByUser_IdAndInterestId(id, interest.getId());
+    }
 }

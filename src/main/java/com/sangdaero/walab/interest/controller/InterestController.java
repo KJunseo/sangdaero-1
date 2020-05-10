@@ -58,8 +58,11 @@ public class InterestController {
 	}
 
 	@PutMapping("/edit/{id}")
-	public String update(@PathVariable Long id, InterestDto interestDTO, Model model) throws Exception {
+	public String update(@PathVariable Long id, @Valid InterestDto interestDTO, Model model, Errors errors) throws Exception {
 
+		if(errors.hasErrors()) {
+			return "redirect:/interest";
+		}
 		mInterestService.update(id, interestDTO.getName());
 		System.out.println(interestDTO);
 //		mInterestService.addInterest(interestDTO);
