@@ -280,4 +280,29 @@ public class UserService extends OidcUserService {
     public void removeInterest(Long id, InterestCategory interest) {
         mUserInterestRepository.deleteByUser_IdAndInterestId(id, interest.getId());
     }
+
+    public void changeVolunteerTime(Long id, Integer time) {
+        Optional<User> byId = mUserRepository.findById(id);
+        byId.ifPresent(a->a.setVolunteerTime(time));
+    }
+
+    public void changeNickname(Long id, String nickname) {
+        Optional<User> byId = mUserRepository.findById(id);
+        byId.ifPresent(a->a.setNickname(nickname));
+    }
+
+    public void changeName(Long id, String name) {
+        Optional<User> byId = mUserRepository.findById(id);
+        byId.ifPresent(a->a.setName(name));
+    }
+
+    public void changePhone(Long id, String phone) {
+        Optional<User> byId = mUserRepository.findById(id);
+        byId.ifPresent(a->a.setPhone(phone));
+    }
+
+    public void changeUserType(Long id, Byte type) {
+        Optional<User> byId = mUserRepository.findById(id);
+        byId.ifPresent(a->a.setUserType(type));
+    }
 }

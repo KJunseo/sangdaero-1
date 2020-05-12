@@ -71,8 +71,8 @@ public class InterestController {
 //		model.addAttribute("interestList", interestDTOList);
 //		model.addAttribute(new InterestDto());
 //		model.addAttribute("mod_interest", new InterestDto());
-
 //		return "html/interest/interest";
+		
 		return "redirect:/interest";
 	}
 
