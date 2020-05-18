@@ -9,7 +9,9 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sangdaero.walab.common.entity.UserInterest;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,7 @@ public class User extends TimeEntity {
 	
 	// 2020-05-11 added
 	@OneToMany(fetch= FetchType.LAZY, mappedBy="userId")
-    @JsonIgnore
+	@JsonIgnore
 	private Set<FundraisingEntity> fundraising = new HashSet<FundraisingEntity>();
 	
 	@Id @GeneratedValue

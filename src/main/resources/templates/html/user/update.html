@@ -199,14 +199,14 @@
             var tagInput = document.querySelector("#tags");
 
             var tagify = new Tagify(tagInput, {
+                enforceWhitelist: true,
                 whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
                 dropdown : {
                     position: "manual",
                     maxItems: Infinity,
                     enabled: 0,
                     classname: "customSuggestionsList"
-                }, // map tags
-                enforceWhitelist: true,
+                } // map tags
             });
 
             tagify.on("dropdown:show", onSuggestionsListUpdate)

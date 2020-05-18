@@ -1,6 +1,5 @@
 package com.sangdaero.walab.activity.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -44,9 +43,6 @@ public class ActivityDto {
 	
 	private LocalDateTime regDate;
 	private LocalDateTime modDate;
-
-//	private BigDecimal coordi_y;
-//	private BigDecimal coordi_x;
 	
 	@Builder
 	public ActivityDto(Long id, String title, Byte status, Integer eventCategory, InterestCategory interestCategory, 
@@ -72,9 +68,6 @@ public class ActivityDto {
 		this.deadline = deadline;
 		this.regDate = regDate;
 		this.modDate = modDate;
-//
-//		this.coordi_y = coordi_y;
-//		this.coordi_x = coordi_x;
 	}
 	
 	// request uses 'event' table.

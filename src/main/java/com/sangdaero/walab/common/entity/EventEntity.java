@@ -1,10 +1,7 @@
 package com.sangdaero.walab.common.entity;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
 import java.util.HashSet;
-
 import java.util.List;
 import java.util.Set;
 
@@ -23,10 +20,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -120,12 +117,6 @@ public class EventEntity extends TimeEntity {
 	private String evaluate;
 
 	private LocalDateTime deadline;
-
-//	@Column(precision = 9, scale = 6)
-//	private BigDecimal coordi_y;
-//
-//	@Column(precision = 9, scale = 6)
-//	private BigDecimal coordi_x;
 
 	@Builder
 	public EventEntity(Long id, String title, Byte status, Integer eventCategory, User manager,
