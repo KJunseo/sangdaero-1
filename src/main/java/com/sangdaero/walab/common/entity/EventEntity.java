@@ -1,7 +1,10 @@
 package com.sangdaero.walab.common.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
+import java.util.HashSet;
+
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +23,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -38,6 +42,11 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EventEntity extends TimeEntity {
 
+	// 2020-05-11 added
+	@OneToMany(fetch= FetchType.LAZY, mappedBy="eventId")
+	@JsonIgnore
+	private Set<FundraisingEntity> fundraising = new HashSet<FundraisingEntity>();
+	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -58,9 +67,9 @@ public class EventEntity extends TimeEntity {
 	
 	@OneToMany(mappedBy="event")
 	private List<UserEventMapper> userEventList;
-
+  
 	@ManyToOne
-	@JoinColumn(name="manager", nullable=true)
+	@JoinColumn(name = "manager", nullable=true)
 	private User manager;
 
 	@Column(length = 255)
@@ -112,6 +121,12 @@ public class EventEntity extends TimeEntity {
 
 	private LocalDateTime deadline;
 
+//	@Column(precision = 9, scale = 6)
+//	private BigDecimal coordi_y;
+//
+//	@Column(precision = 9, scale = 6)
+//	private BigDecimal coordi_x;
+
 	@Builder
 	public EventEntity(Long id, String title, Byte status, Integer eventCategory, User manager,
 			String place,  LocalDateTime startTime, LocalDateTime endTime, String content, Byte deliveryFlag,
@@ -140,5 +155,6 @@ public class EventEntity extends TimeEntity {
 		this.evaluate = evaluate;
 		this.deadline = deadline;
 	}
+
 	
 }

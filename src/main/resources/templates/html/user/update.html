@@ -151,7 +151,6 @@
         </div>
     </div>
     <script th:replace="common/fragments.html :: form-validation"></script>
-    <script src="/node_modules/@yaireo/tagify/dist/tagify.min.js"></script>
     <script type="application/javascript">
         $(function () {
             var id = document.getElementById('uid').value;
@@ -200,14 +199,14 @@
             var tagInput = document.querySelector("#tags");
 
             var tagify = new Tagify(tagInput, {
-                enforceWhitelist: true,
                 whitelist: JSON.parse(document.querySelector("#whitelist").textContent),
                 dropdown : {
                     position: "manual",
                     maxItems: Infinity,
                     enabled: 0,
                     classname: "customSuggestionsList"
-                } // map tags
+                }, // map tags
+                enforceWhitelist: true,
             });
 
             tagify.on("dropdown:show", onSuggestionsListUpdate)
@@ -246,7 +245,6 @@
             var id = document.getElementById('uid').value;
             var testValue = document.getElementById("currentTime").value;
             var addTime = document.getElementById("time").value;
-
             document.getElementById("volunteerTime").innerHTML = String(Number(testValue)-Number(addTime));
             document.getElementById("currentTime").value=Number(testValue)-Number(addTime);
             document.getElementById("time").value=null;

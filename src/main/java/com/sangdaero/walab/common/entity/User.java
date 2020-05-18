@@ -8,9 +8,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import com.sangdaero.walab.common.entity.UserInterest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,9 +18,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 public class User extends TimeEntity {
-
+	
+	// 2020-05-11 added
+	@OneToMany(fetch= FetchType.LAZY, mappedBy="userId")
+    @JsonIgnore
+	private Set<FundraisingEntity> fundraising = new HashSet<FundraisingEntity>();
+	
 	@Id @GeneratedValue
     private Long id;
 
@@ -42,6 +46,7 @@ public class User extends TimeEntity {
     private Integer volunteerTime;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserInterest> userInterestList = new ArrayList<>();
 
     private String service;

@@ -14,6 +14,11 @@ import javax.persistence.*;
 @IdClass(UserInterestId.class)
 public class UserInterest {
 
+    @PrePersist
+    public void prePersist() {
+        this.on_off = this.on_off == null ? 1 : this.on_off;
+    }
+
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -24,4 +29,6 @@ public class UserInterest {
     @JoinColumn(name = "interest_id")
     private InterestCategory interest;
 
+
+    private Byte on_off;
 }

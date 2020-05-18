@@ -5,12 +5,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
+import com.sangdaero.walab.activity.domain.repository.ActivityRepository;
 import com.sangdaero.walab.common.entity.*;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserEventMapperRepository;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
 import com.sangdaero.walab.ranking.service.RankingService;
-import com.sangdaero.walab.request.domain.repository.RequestRepository;
+
 import com.sangdaero.walab.user.application.dto.SimpleUser;
 import com.sangdaero.walab.user.application.dto.UserDetailDto;
 import com.sangdaero.walab.user.application.dto.UserDto;
@@ -38,7 +39,7 @@ public class UserService extends OidcUserService {
 	private final InterestRepository mInterestRepository;
     private final UserRepository mUserRepository;
     private final UserInterestRepository mUserInterestRepository;
-    private final RequestRepository mRequestRepository;
+    private final ActivityRepository mActivityRepository;
     private final UserEventMapperRepository mUserEventMapperRepository;
 	
 	@Override
@@ -226,7 +227,7 @@ public class UserService extends OidcUserService {
             endDate = LocalDateTime.parse(RankingService.getLastDayMonth()+"T23:59:59");
         }
 
-        List<EventEntity> list = mRequestRepository.findAllByStatusAndStartTimeGreaterThanEqualAndEndTimeLessThanEqual((byte)scope, currentDate, endDate);
+        List<EventEntity> list = mActivityRepository.findAllByStatusAndStartTimeGreaterThanEqualAndEndTimeLessThanEqual((byte)scope, currentDate, endDate);
         Map<Long, Integer> map = new HashMap<>();
 
         for(EventEntity event : list) {
@@ -305,4 +306,26 @@ public class UserService extends OidcUserService {
         Optional<User> byId = mUserRepository.findById(id);
         byId.ifPresent(a->a.setUserType(type));
     }
+    
+    public List<UserDetailDto> findUsers(String keyword) {
+		List<User> users = mUserRepository.findAllByNameContaining(keyword);
+		List<UserDetailDto> userList = new ArrayList<>();
+		
+		for(User user: users) {
+			UserDetailDto userDetailDTO = UserDetailDto.builder()
+   	                .id(user.getId())
+   	                .name(user.getName())
+   	                .nickname(user.getNickname())
+   	                .socialId(user.getSocialId())
+   	                .phone(user.getPhone())
+   	                .userType(user.getUserType())
+   	                .volunteerTime(user.getVolunteerTime())
+   	                .interestName(null)
+   	                .build();
+		
+			userList.add(userDetailDTO);
+		}
+				
+		return userList;
+	}
 }

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset="UTF-8">
+<head lang="en" th:replace="common/header :: header"></head>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<body>
+
+	<div lang="en" th:replace="common/menu :: menu"></div>
+
+	<div id="main" style="margin-left: 15%">
+
+		<button id="openNav" style="display: none"
+			class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+		<div class="w3-container">
+			<h3>활동 등록</h3>
+		</div>
+
+		<div class="container">
+
+			<form action="/activity/activityForm" method="post" enctype="multipart/form-data">
+				
+				<input type="hidden" name="requestId" th:value="${requestDto?.id}"/>
+
+				<div class="row">
+					<h4>기본 정보</h4>
+				</div>
+				<div class="row">
+					<div class="col-md-5">
+						<div class="row">
+							카테고리:
+							<select name="interestCategoryId">
+								<option value="0">관심사를 선택하세요</option>
+								<option th:each="interest : ${interests}" th:value="${interest.id}"
+									th:text="${interest.name}" th:selected="${interest.id} == ${requestDto?.interestCategory?.id}"></option>
+							</select>
+						</div>
+						<div class="row">
+							마감 기한:
+							<input type="date" name="deadlineDate"> <input
+								type="time" name="deadlineTime">
+						</div>
+					</div>
+					<div class="col-md-7">
+						제목:
+						<input type="text" name="title" th:value="${requestDto?.title}">
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<h4>담당 인원</h4>
+				</div>
+				<div class="row">
+					<div class="col-md-5">
+						<div class="row">
+							이용자:
+							<input id="searchUsers" type="text" placeholder="유저 이름으로 검색">
+							<ul id="users">
+
+							</ul>
+							<div id="pagingUsers">
+
+							</div>
+						</div>
+						<div class="row">
+							관리자:
+							<select name="managerId">
+								<option value="0">관리자를 선택하세요</option>
+								<option th:each="manager : ${managers}" th:value="${manager.id}"
+									th:text="${manager.name}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-7">
+						봉사자:
+						<input id="searchVolunteers" type="text" placeholder="유저 이름으로 검색">
+						<ul id="volunteers">
+
+						</ul>
+						<div id="pagingVolunteers">
+
+						</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<h4>활동 내용</h4>
+				</div>
+				<div class="row">
+					<div class="col-md-9">
+						활동 시간:
+						<input type="date" name="startDate"> <input type="time" name="startTime"> ~ <input type="date" name="endDate"> <input type="time" name="endTime">
+
+					</div>
+					<div class="col-md-3">
+						장소:
+						<input type="text" id="place" name="place" placeholder="주소">
+						<input type="button" onclick="execPostcode()" value="주소 검색">
+					</div>
+				</div>
+				<div class="row">
+					상세 설명:
+					<textarea name="content"></textarea>
+				</div>
+				<div class="row">
+<!--					<input type="radio" id="direct" name="delivery" value="0" checked>-->
+<!--					<label for="direct">직접 수령</label> <input type="radio" id="through"-->
+<!--															 name="delivery" value="1"> <label for="through">봉사사-->
+<!--					통해 전달</label>-->
+<!--					<br> <input type="file" name="files" multiple> <br>-->
+				</div>
+
+				<input type="submit" value="등록">
+			</form>
+			<a th:href="@{/activity}">
+				<button>뒤로가기</button>
+			</a>
+		</div>
+
+
+		<script th:inline="javascript">
+		
+			const usersPerPage = 4;
+			var numOfPages = 0;
+			var numOfPagesVolunteers = 0;
+			var users = [];
+			var volunteers = [];
+			var clickedUsers = [];
+			var clickedVolunteers = [];
+
+			function execPostcode() {
+				new daum.Postcode({
+					oncomplete: function(data) {
+						var addr = data.address; // 최종 주소 변수
+
+						// 주소 정보를 해당 필드에 넣는다.
+						document.getElementById("place").value = addr;
+					}
+				}).open();
+			}
+		
+			function addEventListenersToUsers(){
+				$('input[name="userId"]').each(function(){
+					
+					/*if($(this).prop('checked')){
+		    			$('#editVolunteers li input[value="'+ $(this).val() +'"]').prop('disabled', true);
+					}*/
+					
+					if(clickedUsers.indexOf($(this).val()) > -1){
+						$(this).prop('checked', true);
+	    			}
+					
+					$(this).click(function(){
+						$('#volunteers li input[value="'+ $(this).val() +'"]').prop('disabled', function(i, v) { return !v; });
+						
+						if($(this).prop('checked')){
+			    			if(clickedUsers.indexOf($(this).val()) == -1){
+			    				clickedUsers.push($(this).val());
+			    			}
+						}
+						else{
+							if(clickedUsers.indexOf($(this).val()) > -1){
+			    				clickedUsers.splice(clickedUsers.indexOf($(this).val()), 1);
+			    			}
+						}
+						
+					})
+					
+				})	
+			}
+			
+			function addEventListenersToVolunteers(){
+				
+				$('input[name="volunteerId"]').each(function(){
+					
+					/*if($(this).prop('checked')){
+		    			$('#editUsers li input[value="'+ $(this).val() +'"]').prop('disabled', true);
+		    		}*/
+					
+					if(clickedVolunteers.indexOf($(this).val()) > -1){
+						$(this).prop('checked', true);
+	    			}
+					
+					$(this).click(function(){
+						$('#users li input[value="'+ $(this).val() +'"]').prop('disabled', function(i, v) { return !v; });
+						
+						if($(this).prop('checked')){
+			    			if(clickedVolunteers.indexOf($(this).val()) == -1){
+			    				clickedVolunteers.push($(this).val());
+			    			}
+						}
+						else{
+							if(clickedVolunteers.indexOf($(this).val()) > -1){
+			    				clickedVolunteers.splice(clickedVolunteers.indexOf($(this).val()), 1);
+			    			}
+						}
+						
+					})
+					
+				})
+				
+			}
+			
+			function addEventListenersToUserPagingButtons(){
+				$('#pagingUsers button.page').each(function(){
+					
+					$(this).click(function(){
+						var pageNumber = $(this).text();
+						var innerHtml = "";
+						try{
+							
+							for(var i = 0; i < users.length ; i++ ){
+								
+								if(i >= ((pageNumber-1)*usersPerPage) && i < (pageNumber*usersPerPage)){
+									innerHtml += "<li><input type='checkbox' id='"+ users[i].id + "' value='"+ users[i].id +"' name='userId'";										
+								}
+								else{
+									innerHtml += "<li style='display: none;'><input type='checkbox' id='"+ users[i].id + "' value='"+ users[i].id +"' name='userId'";	
+								}
+								
+								if(clickedVolunteers.indexOf(users[i].id.toString()) > -1){
+									innerHtml += " disabled> <label for='"+ users[i].id +"'>"+ users[i].name +"</label></li>";
+								}
+								else{
+									innerHtml += "> <label for='"+ users[i].id +"'>"+ users[i].name +"</label></li>";
+								}
+								
+							}
+							
+						}
+						finally{
+							$('#users').html(innerHtml);
+							addEventListenersToUsers();
+						}
+					})
+					
+				})
+				
+			}
+			
+			function addEventListenersToVolunteerPagingButtons(){
+				$('#pagingVolunteers button.page').each(function(){
+					
+					$(this).click(function(){
+						var pageNumber = $(this).text();
+						var innerHtml = "";
+						try{
+							
+							for(var i = 0; i < volunteers.length ; i++ ){
+								
+								if(i >= ((pageNumber-1)*usersPerPage) && i < (pageNumber*usersPerPage)){
+									innerHtml += "<li><input type='checkbox' id='"+ volunteers[i].id + "' value='"+ volunteers[i].id +"' name='volunteerId'";										
+								}
+								else{
+									innerHtml += "<li style='display: none;'><input type='checkbox' id='"+ volunteers[i].id + "' value='"+ volunteers[i].id +"' name='volunteerId'";	
+								}
+								
+								if(clickedUsers.indexOf(volunteers[i].id.toString()) > -1){
+									innerHtml += " disabled> <label for='"+ volunteers[i].id +"'>"+ volunteers[i].name +"</label></li>";
+								}
+								else{
+									innerHtml += "> <label for='"+ volunteers[i].id +"'>"+ volunteers[i].name +"</label></li>";
+								}
+								
+							}
+							
+						}
+						finally{
+							$('#volunteers').html(innerHtml);
+							addEventListenersToVolunteers();
+						}
+					})
+					
+				})
+				
+			}
+			
+			
+			$('input#searchUsers').on('input', function(){
+				var keyword = $('#searchUsers').val();
+				
+				$.get("/activitydata/getUsers", {keyword: keyword}, function(data) {
+					var innerHtml = "";
+					var innerPage = "";
+					var pages = 0;
+					users = data;
+					
+					try{
+						if(data!=null && data.length>0){
+							var count = 0;
+							data.forEach(function(item){
+								if(pages<1){
+									innerHtml += "<li><input type='checkbox' id='"+ item.id + "' value='"+ item.id +"' name='userId'";									
+								}
+								else{
+									innerHtml += "<li style='display: none;'><input type='checkbox' id='"+ item.id + "' value='"+ item.id +"' name='userId'";							
+								}
+								
+								if(clickedVolunteers.indexOf(item.id.toString()) > -1){
+									innerHtml += " disabled> <label for='"+ item.id +"'>"+ item.name +"</label></li>";
+								}
+								else{
+									innerHtml += "> <label for='"+ item.id +"'>"+ item.name +"</label></li>";
+								}
+								
+								count++;
+								
+								if(count == usersPerPage){
+									pages++;
+									count = 0;
+								}
+							})
+							
+							numOfPages = pages;
+							
+							for(var i = 0; i < pages ; i++){
+								innerPage += "<button type='button' class='page'>"+ (i+1) +"</button>";
+							}
+						}
+						else{
+							innerHtml = "그 이름의 이용자를 찾지 못했습니다";
+						}
+					}
+					finally{
+						$('#users').html(innerHtml);
+						$('#pagingUsers').html(innerPage);
+						
+						addEventListenersToUsers();
+						addEventListenersToUserPagingButtons();
+					}
+					
+        		});
+				
+			})
+			
+			$('input#searchVolunteers').on('input', function(){
+				var keyword = $('#searchVolunteers').val();
+				
+				$.get("/activitydata/getUsers", {keyword: keyword}, function(data) {
+					var innerHtml = "";
+					var innerPage = "";
+					var pages = 0;
+					volunteers = data;
+					
+					try{
+						if(data!=null && data.length>0){
+							var count = 0;
+							data.forEach(function(item){
+								if(pages<1){
+									innerHtml += "<li><input type='checkbox' id='"+ item.id + "' value='"+ item.id +"' name='volunteerId'";									
+								}
+								else{
+									innerHtml += "<li style='display: none;'><input type='checkbox' id='"+ item.id + "' value='"+ item.id +"' name='volunteerId'";							
+								}
+								
+								if(clickedUsers.indexOf(item.id.toString()) > -1){
+									innerHtml += " disabled> <label for='"+ item.id +"'>"+ item.name +"</label></li>";
+								}
+								else{
+									innerHtml += "> <label for='"+ item.id +"'>"+ item.name +"</label></li>";
+								}
+								
+								count++;
+								
+								if(count == usersPerPage){
+									pages++;
+									count = 0;
+								}
+							})
+							
+							numOfPagesVolunteers = pages;
+							
+							for(var i = 0; i < pages ; i++){
+								innerPage += "<button type='button' class='page'>"+ (i+1) +"</button>";
+							}
+						}
+						else{
+							innerHtml = "그 이름의 이용자를 찾지 못했습니다";
+						}
+					}
+					finally{
+						$('#volunteers').html(innerHtml);
+						$('#pagingVolunteers').html(innerPage);
+						
+						addEventListenersToVolunteers();
+						addEventListenersToVolunteerPagingButtons();
+					}
+					
+        		});
+				
+			})
+			
+			
+		
+			
+		</script>
+
+
+		<div lang="en" th:replace="common/footer :: footer"></div>
+
+	</div>
+</body>
+</html>
