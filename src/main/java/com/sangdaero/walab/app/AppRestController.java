@@ -1,18 +1,46 @@
-package com.sangdaero.walab;
+package com.sangdaero.walab.app;
 
+import com.sangdaero.walab.activity.domain.repository.ActivityRepository;
+import com.sangdaero.walab.common.entity.EventEntity;
 import com.sangdaero.walab.common.entity.User;
 import com.sangdaero.walab.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class TestRestController {
+public class AppRestController {
 
     private final UserRepository userRepository;
+    private final ActivityRepository activityRepository;
+
+//    @GetMapping
+//    @ResponseBody
+//    public ResponseEntity getActivityList() {
+//        List<EventEntity> allActivity = activityRepository.findAll();
+//
+//
+//
+//    }
+
+//    @PostMapping
+//    public ResponseEntity applyActivity() {
+//
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity createActivity() {
+//
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity cancleActivity() {
+//
+//    }
+
 
     @GetMapping("/test/get")
     public ResponseEntity testGetFromApp() {

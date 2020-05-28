@@ -1,8 +1,6 @@
 package com.sangdaero.walab.common.entity;
 
-import com.sangdaero.walab.common.entity.InterestCategory;
 import com.sangdaero.walab.mapper.id.UserInterestId;
-import com.sangdaero.walab.common.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

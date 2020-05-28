@@ -10,6 +10,8 @@ public interface SimpleUser {
 
     Byte getUserType();
 
+    String getPhone();
+
     Integer getVolunteerTime();
 
 }

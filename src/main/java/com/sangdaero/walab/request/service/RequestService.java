@@ -1,9 +1,16 @@
 package com.sangdaero.walab.request.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.sangdaero.walab.common.file.repository.FileRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -11,12 +18,17 @@ import org.springframework.stereotype.Service;
 
 import com.sangdaero.walab.request.repository.RequestRepository;
 import com.sangdaero.walab.request.dto.RequestDto;
+import com.sangdaero.walab.activity.domain.repository.ActivityRepository;
+import com.sangdaero.walab.common.entity.EventEntity;
 import com.sangdaero.walab.common.entity.InterestCategory;
 import com.sangdaero.walab.common.entity.Request;
+import com.sangdaero.walab.common.entity.User;
 import com.sangdaero.walab.common.entity.UserEventMapper;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserEventMapperRepository;
+import com.sangdaero.walab.user.application.dto.UserDto;
 import com.sangdaero.walab.user.domain.repository.UserRepository;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class RequestService {
@@ -24,17 +36,22 @@ public class RequestService {
 	private RequestRepository mRequestRepository;
 	private InterestRepository mInterestRepository;
 	private UserRepository mUserRepository;
+	private ActivityRepository mActivityRepository;
 	private UserEventMapperRepository mUserEventMapperRepository;
+	private FileRepository mFileRepository;
 	private static final int BLOCK_PAGE_NUMCOUNT = 6; // 블럭에 존재하는 페이지 수
     private static final int PAGE_POSTCOUNT = 3;  // 한 페이지에 존재하는 게시글 수
 
 	// constructor
 	public RequestService(RequestRepository requestRepository, InterestRepository interestRepository, 
-			UserRepository userRepository, UserEventMapperRepository userEventMapperRepository) {
+			UserRepository userRepository, UserEventMapperRepository userEventMapperRepository,
+		    ActivityRepository activityRepository, FileRepository fileRepository) {
 		mRequestRepository = requestRepository;
 		mInterestRepository = interestRepository;
 		mUserRepository = userRepository;
 		mUserEventMapperRepository = userEventMapperRepository;
+		mActivityRepository = activityRepository;
+		mFileRepository = fileRepository;
 	}
 	
 	// getRequestlist -> convertEntitytoDto
@@ -138,6 +155,44 @@ public class RequestService {
     	
 		return request.getEvent().getId();
 	}
+
+	public void createRequest(Long eventId, Long interestCategoryId, UserDto userDto, MultipartFile multipartFile) {
+		Request request = new Request();
+		
+		User client = mUserRepository.findById(userDto.getId()).orElse(null);
+		EventEntity event = (eventId != null)?mActivityRepository.findById(eventId).orElse(null):null;
+		InterestCategory interestCategory = (eventId != null)?event.getInterestCategory():mInterestRepository.findById(interestCategoryId).orElse(null);
+		
+		request.setClient(client);
+		request.setEvent(event);
+		request.setInterestCategory(interestCategory);
+		request.setStatus((byte)0);
+		request.setTitle((eventId!=null)?userDto.getName() + "님이 " + event.getTitle() + "을/를 봉사자로 참여하기 원하십니다":userDto.getName() + "님이 새로운 활동으로 봉사를 하기 원하십니다");
+
+		if(multipartFile!=null && !multipartFile.isEmpty()) {
+			Path currentPath = Paths.get("");
+			Path absolutePath = currentPath.toAbsolutePath();
+//			String url = "/src/main/resources/static/images/";	//로컬 용
+			String url = "/tomcat/webapps/ROOT/WEB-INF/classes/static/images/";
+			String fileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + multipartFile.getOriginalFilename();
+			Path fileNameAndPath = Paths.get(absolutePath + url, fileName);
+			try {
+				Files.write(fileNameAndPath, multipartFile.getBytes());
+
+				request.setProductImage(fileName);
+
+				mRequestRepository.save(request);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("hello");
+			}
+		}
+		else {
+			mRequestRepository.save(request);
+		}
+		
+	}
     
  // Request -> RequestDto conversion
  		private RequestDto convertRequestToDto(Request request) {
@@ -149,6 +204,7 @@ public class RequestService {
  					.client(request.getClient())
  					.status(request.getStatus())
  					.event(request.getEvent())
+					.productImage(request.getProductImage())
  					.regDate(request.getRegDate())
  					.modDate(request.getModDate())
  					.build();
@@ -156,6 +212,7 @@ public class RequestService {
  			return requestDto;
  			
  		}
+		
 
 		
 

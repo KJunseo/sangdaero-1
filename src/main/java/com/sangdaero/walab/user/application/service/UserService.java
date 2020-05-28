@@ -328,4 +328,52 @@ public class UserService extends OidcUserService {
 				
 		return userList;
 	}
+
+    public UserDto createUser(String email, String name) {
+        UserDto userDto = new UserDto();
+        userDto.setSocialId(email);
+        userDto.setName(name);
+
+        updateUser(userDto);
+
+        User user = mUserRepository.findBySocialId(email);
+
+        return convertEntityToDto(user);
+
+    }
+
+    public List<SimpleUser> getSimpleUserListWithInterestOnOff(Long interestCategoryId) {
+        List<SimpleUser> simpleUserList = mUserRepository.findAllByOrderByName();
+
+        if(interestCategoryId!=0) {
+            Iterator<SimpleUser> iter = simpleUserList.iterator();
+            while (iter.hasNext()) {
+                SimpleUser user = iter.next();
+                UserInterest userInterest = mUserInterestRepository.findByUserIdAndInterestId(user.getId(), interestCategoryId);
+
+                if(userInterest!=null) {
+                    Byte on_Off = userInterest.getOn_off();
+
+                    if(on_Off == 0) {
+                        iter.remove();
+                    }
+                }
+
+            }
+        }
+
+        return simpleUserList;
+    }
+
+
+    @Transactional
+    public void setStartImage(Long id, UserDto userDto, String fileDownloadUri) {
+        UserEventMapper list = mUserEventMapperRepository.findByEventIdAndUserId(id, userDto.getId());
+        list.setStartImage(fileDownloadUri);
+    }
+
+    public void setEndImage(Long id, UserDto userDto, String fileDownloadUri) {
+        UserEventMapper list = mUserEventMapperRepository.findByEventIdAndUserId(id, userDto.getId());
+        list.setEndImage(fileDownloadUri);
+    }
 }

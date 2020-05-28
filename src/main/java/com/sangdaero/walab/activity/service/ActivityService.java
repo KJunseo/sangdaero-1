@@ -41,6 +41,7 @@ import com.sangdaero.walab.mapper.repository.UserEventMapperRepository;
 import com.sangdaero.walab.request.repository.RequestRepository;
 import com.sangdaero.walab.user.application.dto.SimpleUser;
 import com.sangdaero.walab.user.application.dto.UserDetailDto;
+import com.sangdaero.walab.user.application.dto.UserDto;
 import com.sangdaero.walab.user.domain.repository.UserRepository;
 
 @Service
@@ -210,9 +211,9 @@ public class ActivityService {
     }
     
     @Transactional
-    public Long saveActivity(String title, Long interestCategoryId, List<Long> userIdList, List<Byte> userStatusList, Byte delivery, 
-    		Long managerId, String startDate, String startTime, String endDate, String endTime, String place, 
-    		String deadlineDate, String deadlineTime, String content, List<Long> volunteerIdList, List<Byte> volunteerStatusList, MultipartFile[] files, Long requestId) {
+    public Long saveActivity(String title, Long interestCategoryId, List<Long> userIdList, /*List<Byte> userStatusList,*/ Byte delivery, 
+    		Long managerId, String startDate, String startTime, String endDate, String endTime, String place,
+		    String deadlineDate, String deadlineTime, String content, List<Long> volunteerIdList, List<Byte> volunteerStatusList, MultipartFile[] files, Long requestId, String requestFileName) {
 		
     	ActivityDto activityDto = new ActivityDto();
     	
@@ -249,9 +250,12 @@ public class ActivityService {
         		userEventMapper.setUser(user);
         		userEventMapper.setEvent(event);
         		userEventMapper.setUserType((byte) 0);
-        		userEventMapper.setLocationAgree((byte) ((userStatusList.get(index)==1)?1:0));
-        		userEventMapper.setPhoneAgree((byte) ((userStatusList.get(index)==1)?1:0));
-        		userEventMapper.setStatus(userStatusList.get(index));
+        		userEventMapper.setLocationAgree((byte) 1);
+        		userEventMapper.setPhoneAgree((byte) 1);
+        		userEventMapper.setStatus((byte) 1);
+        		//userEventMapper.setLocationAgree((byte) ((userStatusList.get(index)==1)?1:0));
+        		//userEventMapper.setPhoneAgree((byte) ((userStatusList.get(index)==1)?1:0));
+        		//userEventMapper.setStatus(userStatusList.get(index));
         		
         		mUserEventMapperRepository.save(userEventMapper);
         		
@@ -283,8 +287,11 @@ public class ActivityService {
     	}
     		
     	Path currentPath = Paths.get("");
-    	Path absolutePath = currentPath.toAbsolutePath();
-    	String url = "/src/main/resources/static/images/";		
+		Path absolutePath = currentPath.toAbsolutePath();
+
+		String url = "/tomcat/webapps/ROOT/WEB-INF/classes/static/images/";
+
+//    	String url = "/src/main/resources/static/images/";
     		
         for(MultipartFile file: files) {
         	if(file!=null && !file.isEmpty()) {
@@ -305,6 +312,17 @@ public class ActivityService {
          		}
         	}	
         }
+
+		if(requestFileName != null) {
+			Path fileNameAndPath = Paths.get(absolutePath + url, requestFileName);
+
+			FileEntity fileEntity = new FileEntity();
+			fileEntity.setEvent(event);
+			fileEntity.setTitle(requestFileName);
+			fileEntity.setUrl(fileNameAndPath.toString());
+
+			mFileRepository.save(fileEntity);
+		}
         
         if(requestId!=null) {
         	
@@ -430,12 +448,20 @@ public class ActivityService {
             		userEventMapper.setUser(user);
             		userEventMapper.setEvent(event);
             		userEventMapper.setUserType(userType);
-            		userEventMapper.setLocationAgree((byte) 0);
-            		userEventMapper.setPhoneAgree((byte) 0);
-            		userEventMapper.setStatus(userStatusList.get(index));
+            		userEventMapper.setLocationAgree((userStatusList==null)?(byte) 1:(byte) 0);
+            		userEventMapper.setPhoneAgree((userStatusList==null)?(byte) 1:(byte) 0);
+            		userEventMapper.setStatus((userStatusList==null)?(byte) 1:userStatusList.get(index));
         		}
         		else {
-        			userEventMapper.setStatus(userStatusList.get(index));
+        			if(userType == 0) {
+        				userEventMapper.setLocationAgree((byte) 1);
+                		userEventMapper.setPhoneAgree((byte) 1);
+                		userEventMapper.setStatus((byte) 1);
+        			}
+        			else {
+        				userEventMapper.setStatus((userStatusList==null)?userEventMapper.getStatus():userStatusList.get(index));
+        			}
+        			
         		}
         		
         		mUserEventMapperRepository.save(userEventMapper);
@@ -556,9 +582,9 @@ public class ActivityService {
         return activityUsers;
     }
     
-    public ActivityPeopleDto setPeople(Long id, List<Long> userIdList, List<Byte> userStatusList, List<Long> volunteerIdList,
+    public ActivityPeopleDto setPeople(Long id, List<Long> userIdList, /*List<Byte> userStatusList,*/ List<Long> volunteerIdList,
 			List<Byte> volunteerStatusList, Long managerId) {
-    	List<ActivityUserDto> users = setUsers(id, userIdList, userStatusList, (byte) 0);
+    	List<ActivityUserDto> users = setUsers(id, userIdList, null, (byte) 0);
     	List<ActivityUserDto> volunteers = setUsers(id, volunteerIdList, volunteerStatusList, (byte) 1);
     	String managerName = setManager(id, managerId);
     	
@@ -577,6 +603,7 @@ public class ActivityService {
 			UserStatusDto userStatus = new UserStatusDto();
 			userStatus.setId(user.getId());
 			userStatus.setName(user.getName());
+			userStatus.setPhone(user.getPhone());
 			
 			if(id != null) {
 				UserEventMapper userEventMapper = mUserEventMapperRepository.findByEventIdAndUserId(id, user.getId());
@@ -640,6 +667,12 @@ public class ActivityService {
     	activity.setContent(content);
     	
     	mActivityRepository.save(activity);
+	}
+
+    public void unregister(Long eventId, UserDto userDto) {
+		UserEventMapper eventUserMapper = mUserEventMapperRepository.findByEventIdAndUserId(eventId, userDto.getId());
+		eventUserMapper.setStatus((byte)2);
+		mUserEventMapperRepository.save(eventUserMapper);
 	}
     
 	// EventEntity -> ActivityDto conversion
