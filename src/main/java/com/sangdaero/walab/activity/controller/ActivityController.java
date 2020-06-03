@@ -59,7 +59,7 @@ public class ActivityController {
         Integer[] pageList = mActivityService.getPageList(pageNum, keyword, interestType, sortType, status);
         List<InterestDto> interestList = mInterestService.getInterestList();
 
-        int totalNum = pageList.length-1;
+		Long totalNum = mActivityService.getAllActivityNum();
         model.addAttribute("activityList", activityDtoList);
         model.addAttribute("pageList", pageList);
         model.addAttribute("keyword", keyword);

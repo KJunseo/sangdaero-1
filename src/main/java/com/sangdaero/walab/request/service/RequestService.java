@@ -212,8 +212,9 @@ public class RequestService {
  			return requestDto;
  			
  		}
-		
 
-		
 
+	public Long getAllRequestNum() {
+		return mRequestRepository.count();
+	}
 }

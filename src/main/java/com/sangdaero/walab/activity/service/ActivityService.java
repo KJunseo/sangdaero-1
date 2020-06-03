@@ -698,5 +698,8 @@ public class ActivityService {
 			return activityDto;
 			
 		}
-		
+
+	public Long getAllActivityNum() {
+    	return mActivityRepository.count();
+	}
 }
