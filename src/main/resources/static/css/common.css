@@ -14,12 +14,18 @@ body {
     display: inline-block;
     text-align: center;
     padding-right: 20px;
-    width: 80%;
+    width: 77%;
     position: static;
     float: right;
     margin-top: 10px;
     font-size: 20px;
     color: #019783;
+}
+
+hr {
+    position: static;
+    width:90%;
+    border: 0.5px solid #e6e6e6;
 }
 
 h4{
