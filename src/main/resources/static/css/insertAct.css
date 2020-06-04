@@ -238,7 +238,7 @@ select {
       width: 404px;
 }
 #time, #start_time, #end_time{
-  width: 55px;
+  width: 65px;
   height: 25px;
   padding: 0;
   padding-left: 6px;
