@@ -1,3 +1,13 @@
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  min-width: 1000px;
+}
+
+not * {
+  box-sizing: unset;
+}
+
 #actManage {
   background-color: white;
   border-radius: 0 0 15px 15px;
@@ -6,6 +16,14 @@
   text-align: left;
 }
 
+#actInfo {
+  background-color: white;
+}
+
+#actList{
+  border-radius: 0 0 15px 15px;
+  width: 100%;
+}
 
 .upper{
   width: inherit;
@@ -48,7 +66,7 @@ table{
 }
 
 th, td {
-  padding: 8px;
+  padding: 10px;
   border-bottom: 1px solid #ddd;
   text-align: center;
   font-size: 14px;
@@ -62,6 +80,10 @@ th{
   color: #019783;
   height: 50px;
 }
+
+/*table > thead > tr > th {*/
+/*  border: rgba(0, 194, 100, 0.1);*/
+/*}*/
 
 thead {
   display: table-header-group;
@@ -155,7 +177,7 @@ img{
   float: left;
 }
 .selectm{
-  width: 120px;;
+  width: 120px;
   float:left;
   margin: 0;
   margin-right: 10px;
@@ -174,15 +196,92 @@ img{
 .menus{
   width: 100%;
   position:relative;
-  right: -150px;
-
+  right: -20%;
+  /*right: -150px;*/
 }
 
+@media (max-width:1380px){
+  .menus {
+    width: 100% !important;
+    right: -16% !important;
+    /*right: -110px !important;*/
+  }
+}
+
+
+@media (max-width:1320px){
+  .menus {
+    width: 100% !important;
+    right: -12% !important;
+    /*right: -110px !important;*/
+  }
+}
+
+@media (max-width:1266px){
+  .menus {
+    width: 100% !important;
+    right: -45% !important;
+    /*right: -110px !important;*/
+  }
+}
+
+@media (max-width:1176px){
+  .menus {
+    width: 100% !important;
+    right: -38% !important;
+    /*right: -110px !important;*/
+  }
+}
+
+@media (max-width:1140px){
+  .menus {
+    width: 100% !important;
+    right: -37% !important;
+    /*right: -110px !important;*/
+  }
+}
+
+@media (max-width:1130px){
+  .menus {
+    width: 100% !important;
+    right: -28% !important;
+    /*right: -110px !important;*/
+  }
+}
+
+
+
+/*@media (max-width:1149px){*/
+/*  .menus {*/
+/*    width: 100% !important;*/
+/*    right: -30% !important;*/
+/*    !*right: -110px !important;*!*/
+/*  }*/
+/*}*/
+
+
+
 @media (max-width:1411px){
+  #main{
+    width:70%;
+  }
   .selectmenu {
     float: left;
     margin-top: 20px;
-    margin-left: 0px !important;
+    margin-left: 100px !important;
+  }
+  #Paging button{
+    font-size: 10px;
+    margin: 2px;
+  }
+  #prev, #prevv #one, #two, #three, #next, #nextt{
+    font-size: 10px;
+    margin-right: 5px;
+  }
+  #submit {
+    border: none;
+    width: 130px;
+    background: transparent;
   }
 }
 
@@ -190,17 +289,28 @@ img{
   #main{
     width:60%;
   }
+  #Paging button{
+    font-size: 10px;
+    margin: 2px;
+  }
 
+  #prev, #prevv #one, #two, #three, #next, #nextt{
+    font-size: 10px;
+    margin-right: 5px;
+  }
   .selectmenu {
     float: left;
     margin-top: 20px;
     margin-left: -200px;
   }
-
-  .menus {
-    width: 100% !important;
-    right: -50px !important;
+  table{
+    margin-top:40px;
   }
+
+  /*.menus {*/
+  /*  width: 100% !important;*/
+  /*  right: -50px !important;*/
+  /*}*/
   .searchlist input#search {
     width: 160px !important;
   }
@@ -209,13 +319,9 @@ img{
   }
 }
 
-@media (max-width:1168px){
-  .back, .selectm {
-    width: 95px !important;
-  }
-}
 
-@media (max-width:1126px){
+
+@media (max-width:1266px){
   .searchlist input#search {
     width: 300px !important;
   }
@@ -224,9 +330,11 @@ img{
   }
   .searchlist input#search {
     margin-bottom: 20px;
+    margin-left: 100px;
   }
-  .menus {
-    width: 100% !important;
-    right: -150px !important;
-  }
+  /*.menus {*/
+  /*  width: 100% !important;*/
+  /*  right: -150px !important;*/
+  /*}*/
 }
+

@@ -1,366 +1,158 @@
-.inlinebox{
-    display: inline-block;
+@import url('http://fonts.googleapis.com/earlyaccess/notosanskr.css');
+html{
+    margin:0;
+    padding:0;
 }
-
-.sub_heading{
-    color: #019783;
-    font-weight: bold;
-    font-size: 18px;
-    margin-right: 20px;
-    width: auto;
-
+body {
+    font-family: "Noto Sans KR", sans-serif !important;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
 }
-
-
-
-#actManage {
-    background-color: white;
-    padding-left: 30px;
-    border-radius: 0 0 15px 15px;
-    width: 100%;
-    height: 650px;
-    text-align: left;
-    overflow: auto;
-}
-
-input[type=text]{
-    border: 1px solid;
-    border-radius: 20px;
-    border-color: #a5a5a5;
-    padding: 5px 16px;
-    width: 150px;
-    color: #000000;
-    margin-right: 50px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-input[type=date] {
-    border: 1px solid;
-    border-radius: 20px;
-    border-color: #a5a5a5;
-    padding: 3px 16px;
-    color:  #a5a5a5;
-    width: 60px;
-    background: none;
-}
-
-input[type=time] {
-    border: 1px solid;
-    border-radius: 20px;
-    border-color: #a5a5a5;
-    padding: 3px 16px;
-    color:  #a5a5a5;
-    background: none;
-    width: 60px;
-}
-
-input[type=number] {
-    border: 1px solid;
-    border-radius: 20px;
-    border-color: #a5a5a5;
-    padding: 5px 16px;
-    width: 150px;
-    color:  #a5a5a5;
-    text-align: center;
-}
-
-input[type=textarea] {
-    border: 1px solid;
-    border-color: #a5a5a5;
-    padding: 5px 16px;
-    width: 400px;
-    height: 200px;
-    color:  #a5a5a5;
-    margin-left: 10px;
-}
-
-
-.edit{
-    background: none;
-    line-height: 2;
-    border: none;
-    color: #019783;
-    font-size: 13px;
-    margin: 0 10px;
-    text-align:right;
-    float: right;
-
-}
-
-.bar{
-    width: 100%;
+/*header*/
+header {
     height: 50px;
-    background-color: #bbedd5;
-    border-radius: 15px 15px 0px 0;
-    padding: 10px 5px 0px 26px;
+    padding: 10px 15px 0 15px;
+    background: url("/img/bar.png") no-repeat;
+}
+
+#logo {
+    float: left;
+    padding-top: 10px;
+    color: white;
+}
+
+#button {
+    float: right;
+}
+
+#onoff {
+    display: inline-block;
+    position: relative;
+    float: left;
+    margin-right: 5px;
+    width: 60px;
+}
+
+#loginout {
+    width: 85px;
+    display: inline-block;
+    position: relative;
+    float: right;
+}
+
+/*sidebar*/
+#sidebar {
+    display: inline-block;
+    position: static;
+    background-color: white;
+    float: left;
+    width: 17%;
+    min-width: 190px;
+    padding: 20px 20px 20px 0;
+    margin: 0;
+    box-shadow: 5px 2px 15px rgb(192, 192, 192, 0.5);
+    height: 750px;
+    margin-right: 0;
+}
+ul {
+    text-decoration: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.firstMenu:hover{
+    background-color: #00c063;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    color: black;
+}
+.firstMenu a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #4f4f4f;
+}
+.firstMenu span {
+}
+.firstMenu img{
+    float:right;
+    width: 19px;
+}
+.secondMenu a {
+    text-decoration: none;
+    color: #058252;
+    font-size: 15px;
+}
+
+.firstMenu {
+    padding: 15px 20px 15px 30px;
+}
+.submenu{
+    display: none;
+}
+.secondMenu {
+    padding: 0;
+    margin: 0;
+    background-color: rgba(0, 192, 102, 0.1);
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 15px 10px 15px 40px;
+    line-height: 40px;
+}
+.clickedMenu{
+    background-color: #00c063;
+    color: black;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+/*main*/
+#main {
+    display: inline-block;
+    text-align: center;
+    padding-right: 20px;
+    width: 77%;
+    position: static;
+    float: right;
+    margin-top: 10px;
+    font-size: 20px;
+    color: #019783;
+}
+h4{
     text-align: left;
 }
-
-.heading{
-    font-size: 20px;
-    font-weight: normal;
-    float: left;
-    color: black;
-    line-height: 2;
-}
-#tag{
-    width: 100px;
-    height: auto;
-    float: left;
-    margin-top: 5px;
-    margin-left: 40px;
-}
-
-.row1{
-    padding-top: 30px;
-}
-
-.line{
-    clear: both;
-    color: #e6e6e6;
-    margin: 20px 0px;
-}
-
-.menu_name{
-    color:#515151;
-    font-weight: normal;
-    margin: 20px 20px 0 0;
-    font-size: 16px;
-    clear: both;
-}
-
-.rightmenu2{
-    position: relative;
-    float: left;
-    width: 65%;
-    top: -15px;
-    margin-left: 30px;
-}
-
-.rightmenu{
-    float: left;
-    position: relative;
-    top: -30px;
-}
-
-.members{
-    padding: 5px 16px;
-    border-radius: 20px;
-    width: 140px;
-    color: #000000;
-    margin-right: 5px;
-    margin-bottom: 10px;
-    font-size: 13px;
-}
-
-.workerblock{
-    float: left;
+#infoForm{
     width: 90%;
 }
-.workertext{
-    float: left;
-    position: relative;
-    top: -15px;
-}
-
-
-
-.user{
-    background: url('/img/28.png');
-}
-.charge{
-    background: url('/img/27.png');
-}
-.worker{
-    background: url('/img/26.png');
-    margin-bottom: 20px;
-}
-
-:placeholder {
-    color: #a5a5a5;
-}
-
-.search_box{
-    margin-left: 30px;
-}
-.searchbox{
-    width: 300px;
-    vertical-align: middle;
-    white-space: nowrap;
-    position: relative;
-}
-
-.searchbox input#search{
-    width: 300px;
-    height: 28px;
-    border: 1px solid #a5a5a5;
-    float: left;
-    color: #a5a5a5;
-    padding-left: 45px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 15px;
-}
-
-.searchbox .icon{
-    position: absolute;
-    top: 5%;
-    margin-left: -30px;
-    margin-top: 5px;
-    z-index: 1;
-    color: #a5a5a5;
-}
-.map{
-    width: 300px;
-    height: 200px;
-    border: none;
-    background-color: #f2f2f2;
-    margin: 30px;
-    margin-left: 80px;
-}
-.sub_contentbox .leftmenu, .rightmenu{
-    float: left;
-    clear: none;
-    margin-bottom: 20px;
-}
-
-.explanationbox{
-    margin-top: 20px;
-}
-@media (max-width:1588px){
-
-    .workblock{
-        margin-left: 30px;
-    }
-
+#actInfo {
+    padding-left: 30px;
+    border-radius: 10px;
+    width: 100%;
+    height: 630px;
+    text-align: left;
 }
 @media (max-width:1411px){
     #main{
-        width:70%;
+        width:75%;
     }
-    #actManage{
-        height: 650px;
+    #actInfo{
+        height: 630px;
     }
-    .rightmenu2{
-        margin-left: 0;
-        margin-top: 10px;
-        width: 100%;
-    }
-    .rightmenu{
-        margin-left: 0;
-        margin-top: 10px;
-        width: 100%;
-    }
-    .workblock{
-        margin-left: 50px;
-    }
-    .endtimemenu{
-        margin-bottom: 10px;
-    }
-    #Paging button{
-        font-size: 10px;
-        margin: 2px;
-    }
-    #prev, #prevv #one, #two, #three, #next, #nextt{
-        font-size: 10px;
-        margin-right: 5px;
-    }
-
-    .selectmenu {
-        float: left;
-        margin-top: 20px;
-        margin-left: 0px !important;}
-    .separate{
-        width: 200%;
-    }
-
-
 }
 @media (max-width:1176px){
     #main{
-        width:60%;
+        width: 70%;
     }
-    .rightmenu2{
-        margin-left: 0;
-        margin-top: 10px;
-        width: 100%;
+    #actInfo{
+        height: 750px;
     }
-    .rightmenu{
-        margin-left: 0;
-        margin-top: 20px;
-        width: 100%;
-    }
-    .workblock{
-        margin-left: 50px;
-    }
-    .sub_contentbox{
-        height: 19%;
-    }
-    #actManage{
-        height: 1100px;
-    }
-    .workertext{
-        top: 0;
-    }
-    .endtimemenu{
-        margin-bottom: 10px;
-    }
-    #Paging button{
-        font-size: 10px;
-        margin: 2px;
-    }
+    #sidebar {
+        height:900px;
 
-    #prev, #prevv #one, #two, #three, #next, #nextt{
-        font-size: 10px;
-        margin-right: 5px;
-    }
-
-    .selectmenu {
-        float: left;
-        margin-top: 20px;
-        margin-left: -200px;}
-
-    table{
-        margin-top:40px;
-    }
-    .menus {
-        width: 100% !important;
-        right: -50px !important;
-    }
-    .searchlist input#search {
-        width: 160px !important;
-    }
-    .back, .selectm{
-        width: 100px !important;
-    }
-
-}
-
-@media (max-width:1168px){
-    .back, .selectm {
-        width: 95px !important;
     }
 }
-
-@media (max-width:1126px){
-    .back, .selectm {
-        width: 95px !important;
+@media (max-width:930px){
+    body{
+        width: 940px !important;
     }
-    .searchlist input#search {
-        width: 300px !important;
-    }
-    .menus {
-        width: 100% !important;
-        right: -150px !important;
-    }
-    .searchlist input#search {
-        margin-bottom: 20px;
-    }
-    input[type=date] {
-        width: 50px !important;
-    }
-    input[type=time] {
-        width: 50px !important;
-    }
-
 }

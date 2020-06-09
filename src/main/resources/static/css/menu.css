@@ -1,16 +1,18 @@
 /*sidebar*/
 #sidebar {
     display: inline-block;
-    position: static;
+    /*position: static;*/
+    position: fixed;
     background-color: white;
     float: left;
-    width: 17%;
-    min-width: 190px;
+    width: 190px;
+    /*min-width: 190px;*/
     padding: 20px 20px 20px 0;
     margin: 0;
     box-shadow: 5px 2px 15px rgb(192, 192, 192, 0.5);
     height: 750px;
     margin-right: 0;
+    margin-top: 10px;
 }
 
 ul {
@@ -67,8 +69,8 @@ ul {
 }
 
 @media (max-width:1176px){
-    #sidebar {
-        height:900px;
+    /*#sidebar {*/
+    /*    height:900px;*/
 
-    }
+    /*}*/
 }

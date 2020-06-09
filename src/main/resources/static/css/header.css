@@ -3,6 +3,10 @@ header {
     height: 50px;
     padding: 10px 15px 0 15px;
     background: url("/img/bar.png") no-repeat;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
 }
 
 #logo {
