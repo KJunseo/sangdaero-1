@@ -23,7 +23,7 @@ header {
     display: inline-block;
     position: relative;
     float: left;
-    margin-right: 5px;
+    margin: 3px 5px 0 -70px;
     width: 60px;
 }
 
@@ -32,4 +32,5 @@ header {
     display: inline-block;
     position: relative;
     float: right;
+    margin-top: 3px;
 }

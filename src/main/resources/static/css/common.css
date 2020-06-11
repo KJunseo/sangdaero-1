@@ -3,6 +3,7 @@
 html{
     margin:0;
     padding:0;
+    overflow-x: auto;
 }
 body {
     font-family: "Noto Sans KR", sans-serif !important;
@@ -16,13 +17,14 @@ body {
 #main {
     display: inline-block;
     text-align: center;
-    padding-right: 0px;
-    width: 77%;
+    width: 75%;
     position: static;
     float: right;
-    margin-top: 10px;
+    margin-top: 30px;
     font-size: 20px;
     color: #019783;
+    padding-left: 5%;
+    padding-right: 4%;
 }
 
 hr {
@@ -38,7 +40,7 @@ h4{
 /*    width: 90%;*/
 /*}*/
 #infoForm{
-    width: 90%;
+    width: 100%;
 }
 
 #basicBody {
@@ -51,9 +53,7 @@ h4{
 }
 
 @media (max-width:1411px){
-    #main{
-        width:75%;
-    }
+
     #basicBody{
         height: 630px;
     }
@@ -63,9 +63,6 @@ h4{
 }
 
 @media (max-width:1176px){
-    #main{
-        width:70%;
-    }
     #sidebar {
         height:900px;
 

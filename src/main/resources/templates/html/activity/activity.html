@@ -78,13 +78,13 @@
 									<span th:text="${activity.title}"></span>
 								</a>
 							</td>
-							<td>
-								<span th:if="${activity.status == 0}"><img class="condition" src="/img/13.png"></span>
-								<span th:if="${activity.status == 1}"><img class="condition" src="/img/12.png"></span>
-								<span th:if="${activity.status == 2}"><img class="condition" src="/img/9.png"></span>
-								<span th:if="${activity.status == 3}"><img class="condition" src="/img/11.png"></span>
-								<span th:if="${activity.status == 4}"><img class="condition" src="/img/10.png"></span>
-								<span th:if="${activity.status == 5}"><img class="condition" src="/img/8.png"></span>
+							<td class="status">
+								<img th:if="${activity.status == 0}" class="condition" src="/img/b_matching.png">
+								<span th:if="${activity.status == 1}"><img class="condition" src="/img/matching.png"></span>
+								<span th:if="${activity.status == 2}"><img class="condition" src="/img/a_matching.png"></span>
+								<span th:if="${activity.status == 3}"><img class="condition" src="/img/activiting.png"></span>
+								<span th:if="${activity.status == 4}"><img class="condition" src="/img/a_activiting.png"></span>
+								<span th:if="${activity.status == 5}"><img class="condition" src="/img/activity_cancle.png"></span>
 							</td>
 							<td id="actdate">
 								<span th:text="${#temporals.format(activity.regDate, 'yyyy-MM-dd HH:mm')}"></span>
@@ -95,19 +95,19 @@
 			</div>
 			<div class="down">
 				<div id="Paging">
-<!--					<button id="prev" type="submit" name="button"><</button>-->
-<!--					<button id="prevv" type="submit" name="button"><<</button>-->
-<!--					<button id="one" type="submit" name="button">1</button>-->
-<!--					<button id="two" type="submit" name="button">2</img></button>-->
-<!--					<button id="three" type="submit" name="button">3</img></button>-->
-<!--					<button id="next" type="submit" name="button">></button>-->
-<!--					<button id="nextt" type="submit" name="button">>></button>-->
-					<button th:each="pageNum : ${pageList}" th:inline="text"> <a
-							th:href="@{'/activity?page=' + ${pageNum} + '&keyword=' + ${keyword} + '&interestType=' + ${interestType} + '&status=' + ${status}}">[[${pageNum}]]</a>
-					</button>
+					<button id="prevv" type="submit" name="button"><<</button>
+					<button id="prev" type="submit" name="button"><</button>
+					<button id="one" type="submit" name="button">1</button>
+					<button id="two" type="submit" name="button">2</img></button>
+					<button id="three" type="submit" name="button">3</img></button>
+					<button id="next" type="submit" name="button">></button>
+					<button id="nextt" type="submit" name="button">>></button>
+<!--					<button th:each="pageNum : ${pageList}" th:inline="text"> <a-->
+<!--							th:href="@{'/activity?page=' + ${pageNum} + '&keyword=' + ${keyword} + '&interestType=' + ${interestType} + '&status=' + ${status}}">[[${pageNum}]]</a>-->
+<!--					</button>-->
 				</div>
 				<button id="list" type="button" name="button">
-					<a th:href="@{/activity/activityForm}"><img src="/img/18.png"></a>
+					<a th:href="@{/activity/activityForm}"><img id="addBtn" src="/img/18.png"></a>
 				</button>
 			</div>
 		</form>
