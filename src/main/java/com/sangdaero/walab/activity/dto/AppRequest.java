@@ -11,4 +11,6 @@ public class AppRequest {
 
     private Long id;
 
+    private Byte type;
+
 }

@@ -27,14 +27,14 @@
 
 	<script th:inline="javascript">
 
-        var logout = function() {
-            $.post("/logout", function() {
-                //$("#user").html('');
-                $(".unauthenticated").show();
-                $(".authenticated").hide();
-            })
-            return true;
-        }
+        // var logout = function() {
+        //     $.post("/logout", function() {
+        //         //$("#user").html('');
+        //         $(".unauthenticated").show();
+        //         $(".authenticated").hide();
+        //     })
+        //     return true;
+        // }
 
         $.get("/userdata/getBasicInfo", function(data) {
             if(typeof data.name != "undefined"){
@@ -57,9 +57,9 @@
 
 
             }
-            else{
-                logout();
-            }
+            // else{
+            //     logout();
+            // }
         });
 
         $( document ).ready(function() {

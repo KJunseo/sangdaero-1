@@ -5,7 +5,43 @@
 	<link rel="stylesheet" href="/css/manageAct.css">
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f0794c5090c6554a68e453d22b1837f5&libraries=services"></script>
+	<style th:inline="text">
+		.multiselect {
+			width: 200px;
+		}
 
+		.selectBox {
+			position: relative;
+		}
+
+		.selectBox select {
+			width: 100%;
+			font-weight: bold;
+		}
+
+		.overSelect {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+		}
+
+		#users {
+			display: none;
+			border: 1px #dadada solid;
+			max-height:100px;/* you can change as you need it */
+			overflow:auto;/* to get scroll */
+		}
+
+		#volunteers {
+			display: none;
+			border: 1px #dadada solid;
+			max-height:100px;/* you can change as you need it */
+			overflow:auto;/* to get scroll */
+		}
+
+	</style>
 </head>
 <body>
 	<header th:replace="common/menu :: header"></header>
@@ -98,9 +134,26 @@
 
 						<div id="userList" th:if="${activityDto.activityUsers.size()} > 0">
 							<div class="members user" th:each="activityUser : ${activityDto.activityUsers}">
+								<input type="hidden" class="userIds" th:value="${activityUser.user?.id}"/>
 								<span th:text="${activityUser.user?.name}"></span>
 								<span th:text="${activityUser.user?.phone}"></span>
 							</div>
+						</div>
+						<div id="editUsers" style="display: none;">
+							<div class="multiselect">
+								<div class="selectBox" onclick="showUserCheckboxes()">
+									<select>
+										<option>이용자를 선택하세요</option>
+									</select>
+									<div class="overSelect"></div>
+								</div>
+								<input id="searchUsers" type="text" placeholder="유저 이름으로 검색" style="height:99.5%; width: 99.5%; display: none">
+								<ul id="users" style="list-style-type: none;">
+
+								</ul>
+							</div>
+							<ul style="display:none;" id="clickedUsers" class="list-group mt-2">
+							</ul>
 						</div>
 					</div>
 					<br>
@@ -139,15 +192,35 @@
 											전화번호 공유 동의: <span th:text="${activityVolunteer.phoneAgree == 0} ? 'X' : 'O'"></span><br>
 											위치 공유 동의: <span th:text="${activityVolunteer.locationAgree == 0} ? 'X' : 'O'"></span><br>
 											상태: <span th:switch="${activityVolunteer.status}"><span th:case="'0'">대기</span> <span th:case="'1'">승인</span> <span th:case="'2'">거절</span></span><br>
-											시작 사진: <img style="display:block;" th:if="${activityVolunteer.startImage}" alt="image" th:src="@{${'/images/' + activityVolunteer.startImage}}" width="250" height="300">
+											시작 사진: <img style="display:block;" th:if="${activityVolunteer.startImage}" alt="image" th:src="@{${activityVolunteer.startImage}}" width="250" height="300">
 											<span th:if="${activityVolunteer.startImage == null}">없음</span>
 											<br>
-											끝 사진: <img style="display:block;" th:if="${activityVolunteer.endImage}" alt="image" th:src="@{${'/images/' + activityVolunteer.endImage}}" width="250" height="300">
-											<span th:if="${activityVolunteer.endImage == null }">없음</span>
+											끝 사진: <img style="display:block;" th:if="${activityVolunteer.endImage}" alt="image" th:src="@{${activityVolunteer.endImage}}" width="250" height="300">
+											<span th:if="${activityVolunteer.endImage == null }">없음</span><br>
+											봉사시간: <span th:id="${'volunteerTime' + activityVolunteer.user?.id}" th:text="${activityVolunteer.volunteerTime}"></span>시간
+											<input th:id="${'editVolunteerTime' + activityVolunteer.user?.id}" type="text" style="display:none;" th:value="${activityVolunteer.volunteerTime}">
+											<a href="#" th:id="${'editVolunteerTimeBtn' + activityVolunteer.user?.id}" th:onclick="'javascript:editVolunteerTime(\'' + ${activityVolunteer.user?.id} + '\');'">편집</a>
+											<a href="#" th:id="${'cancelVolunteerTimeBtn' + activityVolunteer.user?.id}" th:onclick="'javascript:cancelVolunteerTime(\'' + ${activityVolunteer.user?.id} + '\');'" style="display: none;">취소</a>
 										</div>
 
 									</div>
 								</div>
+							</div>
+							<div id="editVolunteers" style="display: none;">
+								<div class="multiselect">
+									<div class="selectBox" onclick="showVolunteerCheckboxes()">
+										<select>
+											<option>봉사자를 선택하세요</option>
+										</select>
+										<div class="overSelect"></div>
+									</div>
+									<input id="searchVolunteers" type="text" placeholder="유저 이름으로 검색" style="height:99.5%; width: 99.5%; display: none">
+									<ul id="volunteers" style="list-style-type: none;">
+
+									</ul>
+								</div>
+								<ul style="display:none;" id="clickedVolunteers" class="list-group mt-2">
+								</ul>
 							</div>
 
 						</div>
@@ -338,6 +411,97 @@
 
 		function hideMessage() {
 			$('#message').hide();
+		}
+
+
+		var expandedUsers = false;
+		var expandedVolunteers = false;
+
+		function showUserCheckboxes() {
+			var checkboxes = document.getElementById("users");
+			var searchboxes = document.getElementById("searchUsers");
+			if (!expandedUsers) {
+				checkboxes.style.display = "block";
+				searchboxes.style.display = "block";
+				expandedUsers = true;
+			} else {
+				checkboxes.style.display = "none";
+				searchboxes.style.display = "none";
+				expandedUsers = false;
+			}
+		}
+
+		function showVolunteerCheckboxes() {
+			var checkboxes = document.getElementById("volunteers");
+			var searchboxes = document.getElementById("searchVolunteers");
+			if (!expandedVolunteers) {
+				checkboxes.style.display = "block";
+				searchboxes.style.display = "block";
+				expandedVolunteers = true;
+			} else {
+				checkboxes.style.display = "none";
+				searchboxes.style.display = "none";
+				expandedVolunteers = false;
+			}
+		}
+
+
+		var volunteerTime;
+
+		function editVolunteerTime(volunteerId){
+			$('#volunteerTime' + volunteerId).toggle();
+			$('#editVolunteerTime' + volunteerId).toggle();
+			$('#cancelVolunteerTimeBtn' + volunteerId).toggle();
+
+			volunteerTime = $('#editVolunteerTime' + volunteerId).val();
+
+			if($('#editVolunteerTimeBtn' + volunteerId).html() == '편집'){
+				$('#editVolunteerTimeBtn' + volunteerId).html('완료');
+			}
+			else{
+				if($('#editVolunteerTime' + volunteerId).val().length == 0){
+
+					$('#volunteerTime' + volunteerId).toggle();
+					$('#editVolunteerTime' + volunteerId).toggle();
+					$('#cancelVolunteerTimeBtn' + volunteerId).toggle();
+
+					$('#message').removeClass("alert-info");
+					$('#message').addClass("alert-danger");
+					$('#mContent').html("봉사시간은 1글자 이상이어야 합니다");
+					$('#message').show();
+
+					setTimeout(function() {
+						hideMessage();
+					}, 2000);
+
+				}
+				else{
+					$('#editVolunteerTimeBtn' + volunteerId).html('편집');
+					$.post("/activitydata/setVolunteerTime", {id: $('#activityId').val(), volunteerId: volunteerId, time: volunteerTime}, function(data) {
+
+						$('#volunteerTime' + volunteerId).html(data);
+
+						$('#message').removeClass("alert-danger");
+						$('#message').addClass("alert-info");
+						$('#mContent').html("봉사시간을 수정하였습니다.");
+						$('#message').show();
+
+						setTimeout(function() {
+							hideMessage();
+						}, 2000);
+
+					});
+				}
+			}
+		}
+
+		function cancelVolunteerTime(volunteerId){
+			$('#volunteerTime' + volunteerId).toggle();
+			$('#editVolunteerTime' + volunteerId).toggle();
+			$('#editVolunteerTime' + volunteerId).val(volunteerTime);
+
+			$('#cancelVolunteerTimeBtn' + volunteerId).toggle();
+			$('#editVolunteerTimeBtn' + volunteerId).html('편집');
 		}
 
 		var statusValue;
@@ -577,13 +741,13 @@
 		var userStatusList = [];
 
 		$('.userIds').each(function(){
-			clickedUsers.push($(this).text());
-			userList.push($(this).text());
+			clickedUsers.push($(this).val());
+			userList.push($(this).val());
 		});
 
 		$('.volunteerIds').each(function(){
-			clickedVolunteers.push($(this).text());
-			volunteerList.push($(this).text());
+			clickedVolunteers.push($(this).val());
+			volunteerList.push($(this).val());
 		});
 
 		function fancyClickUsers(){
@@ -607,13 +771,20 @@
 			try{
 				var innerHtml = (clickedVolunteers.length>0)?"봉사자:":"";
 				var color="";
+				var status;
 				if(userStatusList.length > 0){
 					userStatusList.forEach(function(user){
 						if(clickedVolunteers.indexOf(user.id.toString()) > -1){
-							if($('#volunteer'+ user.id).val() == 0){
+							if(typeof $('#volunteer'+ user.id).val() === 'undefined'){
+								status = user.status;
+							}
+							else{
+								status = $('#volunteer'+ user.id).val();
+							}
+							if(status == 0){
 								color = "warning";
 							}
-							else if($('#volunteer'+ user.id).val() == 1){
+							else if(status == 1){
 								color = "success";
 							}
 							else{
@@ -727,110 +898,17 @@
 
 		}
 
-		function addEventListenersToUserPagingButtons(){
-			$('#pagingUsers button.page').each(function(){
-
-				$(this).click(function(){
-					var pageNumber = $(this).text();
-					var innerHtml = "";
-					try{
-
-						for(var i = 0; i < users.length ; i++ ){
-
-							if(i >= ((pageNumber-1)*usersPerPage) && i < (pageNumber*usersPerPage)){
-								innerHtml += "<li><input type='checkbox' id='"+ users[i].id + "' value='"+ users[i].id +"' name='userId'";
-							}
-							else{
-								innerHtml += "<li style='display: none;'><input type='checkbox' id='"+ users[i].id + "' value='"+ users[i].id +"' name='userId'";
-							}
-
-							if(clickedVolunteers.indexOf(users[i].id.toString()) > -1){
-								innerHtml += " disabled> <label for='"+ users[i].id +"'>"+ users[i].name +"</label></li>";
-							}
-							else{
-								innerHtml += "> <label for='"+ users[i].id +"'>"+ users[i].name +"</label></li>";
-							}
-
-							/*if(users[i].status==null || users[i].status == 0){
-                                innerHtml += "<select style='display: none;' id='user"+ users[i].id +"'><option value='0' selected>대기</option><option value='1'>승인</option><option value='2'>거절</option></select></li>";
-                            }
-                            else if(users[i].status == 1){
-                                innerHtml += "<select style='display: none;' id='user"+ users[i].id +"'><option value='0'>대기</option><option value='1' selected>승인</option><option value='2'>거절</option></select></li>";
-                            }
-                            else{
-                                innerHtml += "<select style='display: none;' id='user"+ users[i].id +"'><option value='0'>대기</option><option value='1'>승인</option><option value='2' selected>거절</option></select></li>";
-                            }*/
-
-						}
-
-					}
-					finally{
-						$('#users').html(innerHtml);
-						addEventListenersToUsers();
-					}
-				})
-
-			})
-
-		}
-
-		function addEventListenersToVolunteerPagingButtons(){
-			$('#pagingVolunteers button.page').each(function(){
-
-				$(this).click(function(){
-					var pageNumber = $(this).text();
-					var innerHtml = "";
-					try{
-
-						for(var i = 0; i < volunteers.length ; i++ ){
-
-							if(i >= ((pageNumber-1)*usersPerPage) && i < (pageNumber*usersPerPage)){
-								innerHtml += "<li><input type='checkbox' id='"+ volunteers[i].id + "' value='"+ volunteers[i].id +"' name='volunteerId'";
-							}
-							else{
-								innerHtml += "<li style='display: none;'><input type='checkbox' id='"+ volunteers[i].id + "' value='"+ volunteers[i].id +"' name='volunteerId'";
-							}
-
-							if(clickedUsers.indexOf(volunteers[i].id.toString()) > -1){
-								innerHtml += " disabled> <label for='"+ volunteers[i].id +"'>"+ volunteers[i].name +"</label>";
-							}
-							else{
-								innerHtml += "> <label for='"+ volunteers[i].id +"'>"+ volunteers[i].name +"</label>";
-							}
-
-							if(volunteers[i].status==null || volunteers[i].status == 0){
-								innerHtml += "<select style='display: none;' id='volunteer"+ volunteers[i].id +"'><option value='0' selected>대기</option><option value='1'>승인</option><option value='2'>거절</option></select></li>";
-							}
-							else if(volunteers[i].status == 1){
-								innerHtml += "<select style='display: none;' id='volunteer"+ volunteers[i].id +"'><option value='0'>대기</option><option value='1' selected>승인</option><option value='2'>거절</option></select></li>";
-							}
-							else{
-								innerHtml += "<select style='display: none;' id='volunteer"+ volunteers[i].id +"'><option value='0'>대기</option><option value='1'>승인</option><option value='2' selected>거절</option></select></li>";
-							}
-
-						}
-
-					}
-					finally{
-						$('#volunteers').html(innerHtml);
-						addEventListenersToVolunteers();
-					}
-				})
-
-			})
-
-		}
 
 		function searchUsers(keyword){
 			var innerHtml = "";
 			var innerPage = "";
-			var pages = 0;
 			users = [];
+			searchUsersKeyword = keyword;
 
 			try{
 
 				userStatusList.forEach(function(user){
-					if(user.name.includes(keyword) && (user.type == null || user.type == 0)){
+					if(user.type == null || user.type == 0){
 						users.push(user);
 					}
 				});
@@ -838,7 +916,7 @@
 				if(users.length > 0){
 					var count = 0;
 					users.forEach(function(item){
-						if(pages<1){
+						if(item.name.includes(keyword)){
 							innerHtml += "<li><input type='checkbox' id='"+ item.id + "' value='"+ item.id +"' name='userId'";
 						}
 						else{
@@ -863,19 +941,10 @@
                             innerHtml += "<select style='display: none;' id='user"+ item.id +"'><option value='0'>대기</option><option value='1'>승인</option><option value='2' selected>거절</option></select></li>";
                         }*/
 
-						count++;
 
-						if(count == usersPerPage){
-							pages++;
-							count = 0;
-						}
 					})
 
-					numOfPages = (count>0)?pages+1:pages;
 
-					for(var i = 0; i < numOfPages ; i++){
-						innerPage += "<button type='button' class='page'>"+ (i+1) +"</button>";
-					}
 				}
 				else{
 					innerHtml = "그 이름의 이용자를 찾지 못했습니다";
@@ -885,10 +954,8 @@
 			finally{
 
 				$('#users').html(innerHtml);
-				$('#pagingUsers').html(innerPage);
 
 				addEventListenersToUsers();
-				addEventListenersToUserPagingButtons();
 
 			}
 
@@ -897,13 +964,13 @@
 		function searchVolunteers(keyword){
 			var innerHtml = "";
 			var innerPage = "";
-			var pages = 0;
 			volunteers = [];
+			searchVolunteersKeyword = keyword;
 
 			try{
 
 				userStatusList.forEach(function(user){
-					if(user.name.includes(keyword) && (user.type == null || user.type == 1)){
+					if((user.type == null || user.type == 1)){
 						volunteers.push(user);
 					}
 				});
@@ -912,7 +979,7 @@
 
 					var count = 0;
 					volunteers.forEach(function(item){
-						if(pages<1){
+						if(item.name.includes(keyword)){
 							innerHtml += "<li><input type='checkbox' id='"+ item.id + "' value='"+ item.id +"' name='volunteerId'";
 						}
 						else{
@@ -936,19 +1003,7 @@
 							innerHtml += "<select style='display: none;' id='volunteer"+ item.id +"'><option value='0'>대기</option><option value='1'>승인</option><option value='2' selected>거절</option></select></li>";
 						}
 
-						count++;
-
-						if(count == usersPerPage){
-							pages++;
-							count = 0;
-						}
 					})
-
-					numOfPagesVolunteers = (count>0)?pages+1:pages;
-
-					for(var i = 0; i < numOfPagesVolunteers ; i++){
-						innerPage += "<button type='button' class='page'>"+ (i+1) +"</button>";
-					}
 
 				}
 				else{
@@ -959,10 +1014,8 @@
 			finally{
 
 				$('#volunteers').html(innerHtml);
-				$('#pagingVolunteers').html(innerPage);
 
 				addEventListenersToVolunteers();
-				addEventListenersToVolunteerPagingButtons();
 
 			}
 
@@ -1087,28 +1140,7 @@
 					try{
 						if(data.users.length > 0){
 							data.users.forEach(function(item){
-								innerUsersHtml += "<tr><td><a data-fancybox data-src='#userDetail" + item.user.id +"' href='javascript:;'>"+ item.user.name +"</a><div style='display: none;' id='userDetail" + item.user.id +"'><h2>이용자 디테일</h2>이름: <span>"+ item.user.name +"</span><br>전화번호: <span>"+ item.user.phone +"</span><br>";
-
-								var phoneAgree = (item.phoneAgree==0)?"X":"O";
-								var locationAgree = (item.locationAgree==0)?"X":"O";
-								var status = "";
-								var startImage = "시작 사진: <span>없음</span><br>";
-								var endImage = "끝 사진: <span>없음</span>";
-								switch(item.status){
-									case 0: status ="대기";
-										break;
-									case 1: status ="승인";
-										break;
-									case 2: status ="거절";
-								}
-								if(item.startImage != null){
-									startImage = "시작 사진: <img style='display:block;' alt='image' src='/images/"+ item.startImage +"' width='250' height='300'>";
-								}
-								if(item.endImage != null){
-									endImage = "끝 사진: <img style='display:block;' alt='image' src='/images/"+ item.endImage +"' width='250' height='300'>";
-								}
-
-								innerUsersHtml += "전화번호 공유 동의: <span>"+ phoneAgree +"</span><br>위치 공유 동의: <span>"+ locationAgree +"</span><br>상태: <span>"+ status +"</span><br>" + startImage + endImage + "</div></td><td>" + item.user.phone + "</td></tr>";
+								innerUsersHtml += "<div class='members user'><input type='hidden' class='userIds' value='"+ item.user.id +"'/><span>"+ item.user.name +"</span><span>"+ item.user.phone +"</span></div>";
 							})
 						}
 						else{
@@ -1117,13 +1149,14 @@
 
 						if(data.volunteers.length > 0){
 							data.volunteers.forEach(function(item){
-								innerVolunteersHtml += "<tr><td><a data-fancybox data-src='#volunteerDetail" + item.user.id +"' href='javascript:;'>"+ item.user.name +"</a><div style='display: none;' id='volunteerDetail" + item.user.id +"'><h2>봉사자 디테일</h2>이름: <span>"+ item.user.name +"</span><br>전화번호: <span>"+ item.user.phone +"</span><br>";
+								innerVolunteersHtml += "<div class='members worker'><input type='hidden' class='volunteerIds' value='"+ item.user.id +"'/><input type='hidden' class='volunteerIds' value='"+ item.user.id +"'><div><a data-fancybox data-src='#volunteerDetail" + item.user.id +"' href='javascript:;'>"+ item.user.name +"</a><span>"+ item.user.phone +"</span><div style='display: none;' id='volunteerDetail" + item.user.id +"'><h2>봉사자 디테일</h2>이름: <span>"+ item.user.name +"</span><br>전화번호: <span>"+ item.user.phone +"</span><br>";
 
 								var phoneAgree = (item.phoneAgree==0)?"X":"O";
 								var locationAgree = (item.locationAgree==0)?"X":"O";
 								var status = "";
 								var startImage = "시작 사진: <span>없음</span><br>";
-								var endImage = "끝 사진: <span>없음</span>";
+								var endImage = "끝 사진: <span>없음</span><br>";
+								var volunteerTime = "봉사시간: <span id='volunteerTime"+ item.user.id +"'>"+ item.volunteerTime +"</span>시간<input id='editVolunteerTime"+ item.user.id +"' type='text' style='display:none;' value='"+ item.volunteerTime +"'><a href='#' id='editVolunteerTimeBtn"+ item.user.id +"' onclick='editVolunteerTime("+ item.user.id +");'>편집</a><a href='#' id='cancelVolunteerTimeBtn"+ item.volunteerTime +"' onclick='cancelVolunteerTime("+ item.user.id +");' style='display: none;'>취소</a>";
 								switch(item.status){
 									case 0: status ="대기";
 										break;
@@ -1138,7 +1171,7 @@
 									endImage = "끝 사진: <img style='display:block;' alt='image' src='/images/"+ item.endImage +"' width='250' height='300'>";
 								}
 
-								innerVolunteersHtml += "전화번호 공유 동의: <span>"+ phoneAgree +"</span><br>위치 공유 동의: <span>"+ locationAgree +"</span><br>상태: <span>"+ status +"</span><br>" + startImage + endImage + "</div></td><td>" + item.user.phone + "</td></tr>";
+								innerVolunteersHtml += "전화번호 공유 동의: <span>"+ phoneAgree +"</span><br>위치 공유 동의: <span>"+ locationAgree +"</span><br>상태: <span>"+ status +"</span><br>" + startImage + endImage + volunteerTime + "</div></div></div>";
 
 							})
 						}
@@ -1170,17 +1203,18 @@
 		$('#cancelUserGroupBtn').click(function(){
 
 			$('#editUsers').toggle();
+
 			if(userList.length != 0){
 				userList.forEach(function(item){
-					$('#editUsers ul li input[value="'+ item +'"]').prop('checked', true);
-					$('#editVolunteers ul li input[value="'+ item +'"]').prop('disabled', true);
+					$('#users li input[value="'+ item +'"]').prop('checked', true);
+					$('#volunteers li input[value="'+ item +'"]').prop('disabled', true);
 				})
 			}
 			else{
-				$('#editUsers ul li input').each(function(){
+				$('#users li input').each(function(){
 					if($(this).prop('checked')){
 						$(this).prop('checked', false);
-						$('#editVolunteers ul li input[value="'+ $(this).val() +'"]').prop('disabled', false);
+						$('#volunteers li input[value="'+ $(this).val() +'"]').prop('disabled', false);
 					}
 				})
 			}
@@ -1194,15 +1228,15 @@
 			$('#editVolunteers').toggle();
 			if(volunteerList.length != 0){
 				volunteerList.forEach(function(item){
-					$('#editVolunteers ul li input[value="'+ item +'"]').prop('checked', true);
-					$('#editUsers ul li input[value="'+ item +'"]').prop('disabled', true);
+					$('#volunteers li input[value="'+ item +'"]').prop('checked', true);
+					$('#users li input[value="'+ item +'"]').prop('disabled', true);
 				})
 			}
 			else{
-				$('#editVolunteers ul li input').each(function(){
+				$('#volunteers li input').each(function(){
 					if($(this).prop('checked')){
 						$(this).prop('checked', false);
-						$('#editUsers ul li input[value="'+ $(this).val() +'"]').prop('disabled', false);
+						$('#users li input[value="'+ $(this).val() +'"]').prop('disabled', false);
 					}
 				})
 			}
@@ -1220,6 +1254,52 @@
 			$('#cancelUserGroupBtn').toggle();
 			$('#editUserGroupBtn').html('편집');
 		})
+
+		$('cancelSearchUsersBtn').click(function(){
+			if(userList.length != 0){
+				userList.forEach(function(item){
+					$('#users li input[value="'+ item +'"]').prop('checked', true);
+					$('#volunteers li input[value="'+ item +'"]').prop('disabled', true);
+				})
+			}
+			else{
+				$('#users li input').each(function(){
+					if($(this).prop('checked')){
+						$(this).prop('checked', false);
+						$('#volunteers li input[value="'+ $(this).val() +'"]').prop('disabled', false);
+					}
+				})
+			}
+
+			$('#users').html("");
+			$('#searchUsers').val("");
+			$('#pagingUsers').html("");
+			clickedUsers = userList;
+			fancyClickUsers();
+		});
+
+		$('#cancelSearchVolunteersBtn').click(function(){
+			if(volunteerList.length != 0){
+				volunteerList.forEach(function(item){
+					$('#volunteers li input[value="'+ item +'"]').prop('checked', true);
+					$('#users li input[value="'+ item +'"]').prop('disabled', true);
+				})
+			}
+			else{
+				$('#volunteers li input').each(function(){
+					if($(this).prop('checked')){
+						$(this).prop('checked', false);
+						$('#users li input[value="'+ $(this).val() +'"]').prop('disabled', false);
+					}
+				})
+			}
+
+			$('#volunteers').html("");
+			$('#searchVolunteers').val("");
+			$('#pagingVolunteers').html("");
+			clickedVolunteers = volunteerList;
+			fancyClickVolunteers();
+		});
 
 
 		var startDate;

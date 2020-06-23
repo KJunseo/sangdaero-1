@@ -11,6 +11,11 @@ public class HomeController {
 		return "html/index.html";
 	}
 
+	@GetMapping("/login")
+	public String loginPage() {
+		return "html/login.html";
+	}
+
 //	@GetMapping("/test/map")
 //	public String naverMap() {
 //		return "html/request/naverMap";

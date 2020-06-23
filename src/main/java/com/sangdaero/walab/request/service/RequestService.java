@@ -40,7 +40,7 @@ public class RequestService {
 	private UserEventMapperRepository mUserEventMapperRepository;
 	private FileRepository mFileRepository;
 	private static final int BLOCK_PAGE_NUMCOUNT = 6; // 블럭에 존재하는 페이지 수
-    private static final int PAGE_POSTCOUNT = 3;  // 한 페이지에 존재하는 게시글 수
+    private static final int PAGE_POSTCOUNT = 8;  // 한 페이지에 존재하는 게시글 수
 
 	// constructor
 	public RequestService(RequestRepository requestRepository, InterestRepository interestRepository, 
@@ -145,7 +145,7 @@ public class RequestService {
     	userEventMapper.setStatus((byte) 1);
     	userEventMapper.setLocationAgree((byte) 1);
     	userEventMapper.setPhoneAgree((byte) 1);
-    	userEventMapper.setUserType((byte) 1);
+		userEventMapper.setUserType(request.getUserType());
     	
     	mUserEventMapperRepository.save(userEventMapper);
     	
@@ -156,7 +156,7 @@ public class RequestService {
 		return request.getEvent().getId();
 	}
 
-	public void createRequest(Long eventId, Long interestCategoryId, UserDto userDto, MultipartFile multipartFile) {
+	public void createRequest(Long eventId, Long interestCategoryId, UserDto userDto, MultipartFile multipartFile, Byte userType) {
 		Request request = new Request();
 		
 		User client = mUserRepository.findById(userDto.getId()).orElse(null);
@@ -167,7 +167,8 @@ public class RequestService {
 		request.setEvent(event);
 		request.setInterestCategory(interestCategory);
 		request.setStatus((byte)0);
-		request.setTitle((eventId!=null)?userDto.getName() + "님이 " + event.getTitle() + "을/를 봉사자로 참여하기 원하십니다":userDto.getName() + "님이 새로운 활동으로 봉사를 하기 원하십니다");
+		request.setTitle((eventId!=null)?userDto.getName() + "님이 " + event.getTitle() + "을/를 참여하기 원하십니다":userDto.getName() + "님이 새로운 활동으로 봉사를 하기 원하십니다");
+		request.setUserType(userType);
 
 		if(multipartFile!=null && !multipartFile.isEmpty()) {
 			Path currentPath = Paths.get("");
@@ -185,7 +186,6 @@ public class RequestService {
 
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("hello");
 			}
 		}
 		else {

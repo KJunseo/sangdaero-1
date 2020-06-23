@@ -29,14 +29,14 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http
         .authorizeRequests(a -> a
-        		.antMatchers("/","/error","/test/**", "/interestdata/**", "/requestdata/**", "/activitydata/**", "/notification/**", "/downloadFile/**").permitAll()
+				.antMatchers("/error","/test/**", "/interestdata/**", "/requestdata/**", "/activitydata/**", "/notification/**", "/downloadFile/**").permitAll()
         		.anyRequest().authenticated()
         )
         .logout(l -> l
-        		.logoutSuccessUrl("/").permitAll()
+				.logoutSuccessUrl("/login").permitAll()
         )
         .csrf().disable()
-        .oauth2Login()
+		.oauth2Login().loginPage("/login")
         .userInfoEndpoint()
         .oidcUserService(mUserService);
 		
