@@ -75,7 +75,7 @@
               <a th:href="'?page='+${simpleUserList.number-1}+'&keyword='+${keyword}+'&condition='+${condition}"> < </a>
             </button>
           </span>
-          <button th:each="pageNo : *{#numbers.sequence(((simpleUserList.number)/5)*5+1, ((totalNum)/10)+1>5 ? ((simpleUserList.number)/5)*5+5 : ((totalNum)/10)+1 )}"
+          <button th:each="pageNo : *{#numbers.sequence(((simpleUserList.number)/5)*5+1, ((totalNum)/10)+1>5 ? ((simpleUserList.number)/5)*5+5 : ((totalNum)%10)>0 ? (((totalNum)/10)+1) : ((totalNum)/10)  )}"
             th:class="${pageNo} == ${simpleUserList.number+1} ? one : plist">
               <a th:href="'?page='+${pageNo-1}+'&keyword='+${keyword}+'&condition='+${condition}">
                 <span th:text="${pageNo}"></span>
