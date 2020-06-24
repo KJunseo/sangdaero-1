@@ -70,22 +70,43 @@
       </div>
       <div class="down">
         <div id="Paging">
-          <ul>
           <span th:if="${!simpleUserList.first}">
-            <li>
-              <button id="prev" name="button">
-                <a th:href="'?page='+${simpleUserList.number-1}+'&keyword='+${keyword}+'&condition='+${condition}"> 이전 </a>
-              </button>
-            </li>
+            <button id="prev" name="button">
+              <a th:href="'?page='+${simpleUserList.number-1}+'&keyword='+${keyword}+'&condition='+${condition}"> < </a>
+            </button>
           </span>
+          <button th:each="pageNo : *{#numbers.sequence(((simpleUserList.number)/5)*5+1, ((totalNum)/10)+1>5 ? ((simpleUserList.number)/5)*5+5 : ((totalNum)/10)+1 )}"
+            th:class="${pageNo} == ${simpleUserList.number+1} ? one : plist">
+              <a th:href="'?page='+${pageNo-1}+'&keyword='+${keyword}+'&condition='+${condition}">
+                <span th:text="${pageNo}"></span>
+              </a>
+          </button>
           <span th:if="${!simpleUserList.last}">
-            <li>
-              <button id="next" name="button">
-                <a th:href="'?page='+${simpleUserList.number+1}+'&keyword='+${keyword}+'&condition='+${condition}"> 다음 </a>
-              </button>
-            </li>
+            <button id="next" name="button">
+              <a th:href="'?page='+${simpleUserList.number+1}+'&keyword='+${keyword}+'&condition='+${condition}"> > </a>
+            </button>
           </span>
-          </ul>
+
+
+<!--          <span th:each="pageNo : *{#numbers.sequence(((simpleUserList.number)/5)*5+1, ((simpleUserList.number)/5)*5+5 )}">-->
+<!--            <span th:text="${pageNo}"></span>-->
+<!--          </span>-->
+<!--          <ul>-->
+<!--          <span th:if="${!simpleUserList.first}">-->
+<!--            <li>-->
+<!--              <button id="prev" name="button">-->
+<!--                <a th:href="'?page='+${simpleUserList.number-1}+'&keyword='+${keyword}+'&condition='+${condition}"> 이전 </a>-->
+<!--              </button>-->
+<!--            </li>-->
+<!--          </span>-->
+<!--          <span th:if="${!simpleUserList.last}">-->
+<!--            <li>-->
+<!--              <button id="next" name="button">-->
+<!--                <a th:href="'?page='+${simpleUserList.number+1}+'&keyword='+${keyword}+'&condition='+${condition}"> 다음 </a>-->
+<!--              </button>-->
+<!--            </li>-->
+<!--          </span>-->
+<!--          </ul>-->
         </div>
         <button id="list" type="button" name="button">
           <a th:href="@{/user/add}"><img id="addBtn" src="/img/add_user.png"></a>
@@ -94,5 +115,8 @@
 <!--    </div>-->
   </div>
   <div lang="en" th:replace="common/footer :: footer"></div>
+  <script>
+    $('#page_list')
+  </script>
 </body>
 </html>
