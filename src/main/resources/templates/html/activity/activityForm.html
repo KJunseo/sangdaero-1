@@ -224,7 +224,7 @@
 
 				<hr class="divgap">
 
-				<div class="infoContent deliveryGroup" style="display: none;">
+				<div class="infoContent deliveryGroup" style="display: none;height: 200px">
 					<div class="subtitle">나눔 내용</div>
 					<div class="sectionLeft">
 						<div class="subcontent">수령 방법</div>
@@ -246,23 +246,6 @@
 				<button id="reset" type="button" name="button" onclick="goBack()"><img src="/img/cancel.png"/></button>
 				<button id="submit" type="submit" name="button"><img src="/img/register.png"/></button>
 			</div>
-
-<!--			<div class="row deliveryGroup" style="display: none;">-->
-<!--				<h4>나눔 내용</h4>-->
-<!--			</div>-->
-<!--			<div class="row deliveryGroup" style="display: none;">-->
-<!--				<div class="col-md-6">-->
-<!--					<input type="radio" id="direct" name="delivery" value="0" checked>-->
-<!--					<label for="direct">직접 수령</label>-->
-<!--					<input type="radio" id="through" name="delivery" value="1">-->
-<!--					<label for="through">봉사사 통해 전달</label>-->
-<!--				</div>-->
-<!--				<div class="col-md-6">-->
-<!--					<input th:if="${productImage == null}" type="file" name="files" multiple>-->
-<!--					<img th:if="${productImage}" alt="image" th:src="@{${'/images/' + productImage}}" width="250" height="250">-->
-<!--					<input th:if="${productImage}" type="text" style="display:none;" name="file" th:value="${productImage}" >-->
-<!--				</div>-->
-<!--			</div>-->
 
 		</form>
 	</div>
