@@ -15,10 +15,10 @@ import com.sangdaero.walab.common.entity.InterestCategory;
 public interface ActivityRepository extends JpaRepository<EventEntity, Long> {
 
 	@EntityGraph(attributePaths = { "interestCategory", "manager" })
-	Page<EventEntity> findAllByEventCategoryAndTitleContaining(int eventCategory, String keyword, Pageable page);
+	Page<EventEntity> findAllByEventCategoryAndTitleContainingOrderByStatusAsc(int eventCategory, String keyword, Pageable page);
 	
 	@EntityGraph(attributePaths = { "interestCategory", "manager" })
-	Page<EventEntity> findAllByEventCategoryAndTitleContainingAndInterestCategory(int eventCategory, String keyword, InterestCategory interestCategory,
+	Page<EventEntity> findAllByEventCategoryAndTitleContainingAndInterestCategoryOrderByStatusAsc(int eventCategory, String keyword, InterestCategory interestCategory,
 			Pageable page);
 	
 	@EntityGraph(attributePaths = { "interestCategory", "manager" })

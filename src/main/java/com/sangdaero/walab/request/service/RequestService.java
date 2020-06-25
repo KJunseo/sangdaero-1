@@ -5,12 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import com.sangdaero.walab.common.entity.*;
 import com.sangdaero.walab.common.file.repository.FileRepository;
+import com.sangdaero.walab.common.notification.repository.NotificationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,11 +22,6 @@ import org.springframework.stereotype.Service;
 import com.sangdaero.walab.request.repository.RequestRepository;
 import com.sangdaero.walab.request.dto.RequestDto;
 import com.sangdaero.walab.activity.domain.repository.ActivityRepository;
-import com.sangdaero.walab.common.entity.EventEntity;
-import com.sangdaero.walab.common.entity.InterestCategory;
-import com.sangdaero.walab.common.entity.Request;
-import com.sangdaero.walab.common.entity.User;
-import com.sangdaero.walab.common.entity.UserEventMapper;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserEventMapperRepository;
 import com.sangdaero.walab.user.application.dto.UserDto;
@@ -39,19 +37,22 @@ public class RequestService {
 	private ActivityRepository mActivityRepository;
 	private UserEventMapperRepository mUserEventMapperRepository;
 	private FileRepository mFileRepository;
+	private NotificationRepository mNotificationRepository;
 	private static final int BLOCK_PAGE_NUMCOUNT = 6; // 블럭에 존재하는 페이지 수
     private static final int PAGE_POSTCOUNT = 8;  // 한 페이지에 존재하는 게시글 수
 
 	// constructor
 	public RequestService(RequestRepository requestRepository, InterestRepository interestRepository, 
 			UserRepository userRepository, UserEventMapperRepository userEventMapperRepository,
-		    ActivityRepository activityRepository, FileRepository fileRepository) {
+						  ActivityRepository activityRepository, FileRepository fileRepository,
+						  NotificationRepository notificationRepository) {
 		mRequestRepository = requestRepository;
 		mInterestRepository = interestRepository;
 		mUserRepository = userRepository;
 		mUserEventMapperRepository = userEventMapperRepository;
 		mActivityRepository = activityRepository;
 		mFileRepository = fileRepository;
+		mNotificationRepository = notificationRepository;
 	}
 	
 	// getRequestlist -> convertEntitytoDto
@@ -59,12 +60,12 @@ public class RequestService {
     	Page<Request> page;
     	
     	if(interestType == 0) {
-    		page = mRequestRepository.findAllByTitleContaining(keyword, PageRequest.of(pageNum-1, PAGE_POSTCOUNT, Sort.by((sortType==1)?Sort.Direction.DESC:Sort.Direction.ASC, "regDate")));
+			page = mRequestRepository.findAllByTitleContainingOrderByStatusAsc(keyword, PageRequest.of(pageNum-1, PAGE_POSTCOUNT, Sort.by((sortType==1)?Sort.Direction.DESC:Sort.Direction.ASC, "regDate")));
     	}
     	else {
     		InterestCategory interestCategory = mInterestRepository.findById(interestType.longValue()).orElse(null);
-    			
-    		page = mRequestRepository.findAllByTitleContainingAndInterestCategory(keyword, interestCategory, PageRequest.of(pageNum-1, PAGE_POSTCOUNT, Sort.by((sortType==1)?Sort.Direction.DESC:Sort.Direction.ASC, "regDate")));
+
+			page = mRequestRepository.findAllByTitleContainingAndInterestCategoryOrderByStatusAsc(keyword, interestCategory, PageRequest.of(pageNum-1, PAGE_POSTCOUNT, Sort.by((sortType==1)?Sort.Direction.DESC:Sort.Direction.ASC, "regDate")));
     	}
     	
     	
@@ -128,10 +129,22 @@ public class RequestService {
     public void setStatus(Long id, Byte status) {
 		
     	Request request = mRequestRepository.findById(id).orElse(null);
+		Notification notification = new Notification();
     	
     	request.setStatus(status);
-    	
-    	mRequestRepository.save(request);
+
+		notification.setUser(request.getClient());
+
+		if(status == 1) {
+			notification.setMessage(request.getTitle() + " 요청이 승인되었습니다");
+		}
+		else if(status == 2) {
+			notification.setMessage(request.getTitle() + " 요청이 거절되었습니다");
+		}
+
+
+		mRequestRepository.save(request);
+		mNotificationRepository.save(notification);
     	
 	}
     
@@ -156,7 +169,8 @@ public class RequestService {
 		return request.getEvent().getId();
 	}
 
-	public void createRequest(Long eventId, Long interestCategoryId, UserDto userDto, MultipartFile multipartFile, Byte userType) {
+	public void createRequest(Long eventId, Long interestCategoryId, UserDto userDto, MultipartFile multipartFile, Byte userType,
+							  LocalDateTime startTime, LocalDateTime endTime, String title, String memo) {
 		Request request = new Request();
 		
 		User client = mUserRepository.findById(userDto.getId()).orElse(null);
@@ -167,8 +181,22 @@ public class RequestService {
 		request.setEvent(event);
 		request.setInterestCategory(interestCategory);
 		request.setStatus((byte)0);
-		request.setTitle((eventId!=null)?userDto.getName() + "님이 " + event.getTitle() + "을/를 참여하기 원하십니다":userDto.getName() + "님이 새로운 활동으로 봉사를 하기 원하십니다");
+		if(title==null) {
+			if(eventId==null) {
+				request.setTitle(userDto.getName() + "님이 새로운 나눔을 하기 원하십니다");
+			}
+			else {
+				request.setTitle(userDto.getName() + "님이 " + event.getTitle() + "을/를 참여하기 원하십니다");
+			}
+
+		}
+		else {
+			request.setTitle(title);
+		}
 		request.setUserType(userType);
+		request.setStartTime(startTime);
+		request.setEndTime(endTime);
+		request.setContent(memo);
 
 		if(multipartFile!=null && !multipartFile.isEmpty()) {
 			Path currentPath = Paths.get("");
@@ -181,6 +209,7 @@ public class RequestService {
 				Files.write(fileNameAndPath, multipartFile.getBytes());
 
 				request.setProductImage(fileName);
+
 
 				mRequestRepository.save(request);
 
@@ -205,6 +234,10 @@ public class RequestService {
  					.status(request.getStatus())
  					.event(request.getEvent())
 					.productImage(request.getProductImage())
+					.userType(request.getUserType())
+					.startTime(request.getStartTime())
+					.endTime(request.getEndTime())
+					.content(request.getContent())
  					.regDate(request.getRegDate())
  					.modDate(request.getModDate())
  					.build();
