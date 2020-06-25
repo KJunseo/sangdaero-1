@@ -40,7 +40,17 @@
 			max-height:100px;/* you can change as you need it */
 			overflow:auto;/* to get scroll */
 		}
-
+		hr {
+			border: 0.5px solid #e6e6e6;
+		}
+		.edit {
+			margin-right: 30px;
+		}
+		#deadline, #volunteerTime, #content, #place {
+			color: black;
+			font-size: 16px;
+			font-weight: 400;
+		}
 	</style>
 </head>
 <body>
@@ -61,7 +71,7 @@
 
 		<input type="hidden" id="activityId" th:value="${activityDto.id}"/>
 
-		<div style="width: 90%">
+		<div>
 		<div class="bar">
 			<div class="heading" id="titleText" th:text="${activityDto.title}"></div>
 			<input id="editTitleField" type="text" th:value="${activityDto.title}" style="display: none;">
@@ -81,11 +91,11 @@
 				<option th:value="4" th:selected="${activityDto.status} == 4">활동 완료</option>
 				<option th:value="5" th:selected="${activityDto.status} == 5">취소된 활동</option>
 			</select>
-			<button id="editTitleGroupBtn" class="inlinebox edit">편집</button>
+			<button id="editTitleGroupBtn" class="inlinebox edit" style="padding-top: 6px">편집</button>
 			<button id="cancelTitleGroupBtn" class="inlinebox edit" style="display: none;">취소</button>
 		</div>
 
-		<div id="actManage">
+		<div id="actManage" style="border-radius: 0px 0px 15px 15px">
 			<div class="row1">
 				<div class="endtimemenu inlinebox">
 					<div class="inlinebox">
