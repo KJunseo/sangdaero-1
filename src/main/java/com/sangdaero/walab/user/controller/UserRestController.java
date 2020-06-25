@@ -115,4 +115,12 @@ public class UserRestController {
 
 	}
 
+	@GetMapping("/getUser")
+	public UserDetailDto getUser(@RequestParam("name") String name, @RequestParam("email") String email) {
+
+		UserDto userDto = mUserService.createUser(email, name);
+
+		return mUserService.getUser(userDto.getId());
+	}
+
 }
