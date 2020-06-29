@@ -150,7 +150,7 @@
 				function rejectRequest(id, event){
 					$.post("/requestdata/setStatus", {id: id, status: 2}, function(data) {
 						if(data == 2){
-							$(event).parent().prev().prev().text("거절");
+							$(event).parent().prev().prev().prev().text("거절");
 							$(event).toggle();
 							$(event).parent().prev().toggle();
 						}

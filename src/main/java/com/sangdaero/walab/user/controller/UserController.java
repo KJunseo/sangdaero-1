@@ -76,6 +76,7 @@ public class UserController {
 
 		userDTO.setVolunteerTime(0);
 		userDTO.setUserType((byte)0);
+		userDTO.setIsDummy((byte)1);
 		mUserService.addUser(userDTO);
 		return "redirect:/user";
 	}
