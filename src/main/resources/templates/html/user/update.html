@@ -214,6 +214,7 @@
             }
 
             function onAdd(e) {
+                console.log(e.detail.data)
                 tagRequest("/add", e.detail.data.value);
             }
 
