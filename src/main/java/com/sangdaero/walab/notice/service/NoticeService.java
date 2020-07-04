@@ -267,4 +267,8 @@ public class NoticeService extends CategoryService {
 				.memo(category.getMemo())
 				.build();
 	}
+
+//    public Long getAllNoticeNum(Long category) {
+//    	return mNoticeRepository.countByTopCategory(category);
+//    }
 }
