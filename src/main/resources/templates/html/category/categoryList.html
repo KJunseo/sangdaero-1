@@ -31,76 +31,76 @@
 	</style>
 </head>
 <body>
-	<header th:replace="common/menu :: header"></header>
+<header th:replace="common/menu :: header"></header>
 
-	<div lang="en" th:replace="common/menu :: menu"></div>
+<div lang="en" th:replace="common/menu :: menu"></div>
 
-	<div id="main">
+<div id="main">
 
-		<div class="upper">
-			<h4 class="header">카테고리 관리</h4>
-			<div class="menus" style="width: 360px">
-				<form action="/noticey/category" method="GET">
-					<div class="selectmenu">
-						<input type="hidden" name="topCategory" th:value="${topCategory}">
-						<div class="selectm">
-							<select name="type" class="back searchtype">
-								<option value="1">메모</option>
-								<option value="2">관리자</option>
-							</select>
-						</div>
+	<div class="upper">
+		<h4 class="header">하위 카테고리 관리</h4>
+		<div class="menus" style="width: 360px">
+			<form action="/noticey/category" method="GET">
+				<div class="selectmenu">
+					<input type="hidden" name="topCategory" th:value="${topCategory}">
+					<div class="selectm">
+						<select name="type" class="back searchtype">
+							<option value="1">이름</option>
+<!--							<option value="2">관리자</option>-->
+						</select>
 					</div>
-					<div class="searchlist searchboxlist">
-						<input id="search" name="keyword" type="text" placeholder="검색어를 입력해주세요">
-					</div>
-				</form>
-			</div>
-		</div>
-
-
-		<div id="actList">
-			<table style="width: 100%;" cellpadding="0" cellspacing="0">
-				<thead>
-					<tr class="top">
-						<th id="leftth" style="border-radius: 15px 0 0 0;">No.</th>
-						<th>Memo</th>
-						<th>Top</th>
-						<th id="rigthth" style="border-radius: 0 15px 0 0;">Status</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="category : ${categoryList}">
-						<td id="no">
-							<span th:text="${category.id}"></span>
-						</td>
-						<td>
-							<a th:href="@{'/'+${path}+'/category/detail/' + ${category.id}+'?topCategory='+${topCategory}}">
-								<span th:text="${category.memo}"></span>
-							</a>
-						</td>
-						<td>
-							<span th:text="${category.topCategory}"></span>
-						</td>
-						<td>
-							<span th:text="${category.status}"></span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="down">
-			<div id="Paging">
-			</div>
-			<button id="list" type="button" name="button">
-				<a th:href="@{'/'+${path}+'/category/add?path='+${path}}"><img src="/img/register.png"/></a>
-			</button>
-			<button id="list" type="button" name="button">
-				<a th:href="@{'/'+${path}}"><img src="/img/cancel.png"/></a>
-			</button>
+				</div>
+				<div class="searchlist searchboxlist">
+					<input id="search" name="keyword" type="text" placeholder="검색어를 입력해주세요">
+				</div>
+			</form>
 		</div>
 	</div>
 
-	<div lang="en" th:replace="common/footer :: footer"></div>
+
+	<div id="actList">
+		<table style="width: 100%;" cellpadding="0" cellspacing="0">
+			<thead>
+			<tr class="top">
+				<th id="leftth" style="border-radius: 15px 0 0 0;">No.</th>
+				<th>이름</th>
+				<th id="rigthth" style="border-radius: 0 15px 0 0;">게시판</th>
+<!--				<th id="rigthth" style="border-radius: 0 15px 0 0;">Status</th>-->
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="category : ${categoryList}">
+				<td id="no">
+					<span th:text="${category.id}"></span>
+				</td>
+				<td>
+					<a th:href="@{'/'+${path}+'/category/detail/' + ${category.id}+'?topCategory='+${topCategory}}">
+						<span th:text="${category.memo}"></span>
+					</a>
+				</td>
+				<td>
+					<span th:if="${category.topCategory==1}" th:text="공지사항"></span>
+				</td>
+<!--				<td>-->
+<!--					<span th:text="${category.status}"></span>-->
+<!--				</td>-->
+			</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="down">
+		<div id="Paging">
+		</div>
+		<button id="list" type="button" name="button">
+			<a th:href="@{'/'+${path}+'/category/add?path='+${path}}"><img src="/img/register.png"/></a>
+		</button>
+		<button id="list" type="button" name="button">
+			<a th:href="@{'/'+${path}}"><img src="/img/cancel.png"/></a>
+		</button>
+	</div>
+</div>
+
+<div lang="en" th:replace="common/footer :: footer"></div>
 
 </div>
 </body>
