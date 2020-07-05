@@ -23,4 +23,10 @@ public class AppRequest {
 
     private String memo;
 
+    private String nickname;
+
+    private Boolean phoneAgree;
+
+    private String phone;
+
 }

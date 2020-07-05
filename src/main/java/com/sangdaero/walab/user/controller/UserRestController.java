@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sangdaero.walab.activity.dto.AppRequest;
 import com.sangdaero.walab.user.application.dto.*;
 import com.sangdaero.walab.user.application.validator.NicknameValidator;
 import com.sangdaero.walab.user.application.validator.PhoneValidator;
@@ -52,9 +53,9 @@ public class UserRestController {
     }
 	
 	@PostMapping("/setStatus")
-    public String setUserStatus(@RequestParam("isOn") Boolean isOn, @AuthenticationPrincipal OAuth2User principal) {
-		mUserService.setStatus(principal, isOn);
-		return "done";
+    public boolean setUserStatus(@RequestParam("isOn") Boolean isOn, @AuthenticationPrincipal OAuth2User principal) {
+		boolean res = mUserService.setStatus(principal, isOn);
+		return isOn;
     }
 
     @PostMapping("/change")
@@ -138,4 +139,29 @@ public class UserRestController {
 		return mUserService.getUser(userDto.getId());
 	}
 
+	@PostMapping("/modifyNickName")
+	public void modifyNickName(@RequestBody AppRequest userForm) {
+		UserDto userDto = mUserService.createUser(userForm.getEmail(), userForm.getName());
+
+		mUserService.changeNickname(userDto.getId(), userForm.getNickname());
+	}
+
+	@GetMapping("/checkNewUser")
+	public Boolean checkNewUser(@RequestParam("name") String name, @RequestParam("email") String email) {
+		return mUserService.checkNewUser(email, name);
+	}
+
+	@PostMapping("/setPhoneAgree")
+	public void setPhoneAgree(@RequestBody AppRequest userForm) {
+		UserDto userDto = mUserService.createUser(userForm.getEmail(), userForm.getName());
+
+		mUserService.setPhoneAgree(userDto.getId(), userForm.getPhoneAgree());
+	}
+
+	@PostMapping("/setBasicInfo")
+	public void setBasicInfo(@RequestBody AppRequest userForm) {
+		UserDto userDto = mUserService.createUser(userForm.getEmail(), userForm.getName());
+
+		mUserService.setBasicInfo(userDto.getId(), userForm.getPhone(), userForm.getNickname(), userForm.getPhoneAgree());
+	}
 }

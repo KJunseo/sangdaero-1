@@ -1,5 +1,6 @@
 package com.sangdaero.walab.request.controller;
 
+import com.sangdaero.walab.request.dto.RequestDto;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +23,10 @@ public class RequestRestController {
 	}
 	
 	@PostMapping("/setStatus")
-	public Byte setStatus(@RequestParam("id") Long id, @RequestParam("status") Byte status) {
-		mRequestService.setStatus(id, status);
-		
-		return status;
+	public RequestDto setStatus(@RequestParam("id") Long id, @RequestParam("status") Byte status) {
+		RequestDto requestDto = mRequestService.setStatus(id, status);
+
+		return requestDto;
 	}
 	
 	@PostMapping("/register")

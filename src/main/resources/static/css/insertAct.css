@@ -147,13 +147,14 @@ select {
   -moz-appearance: none;
   appearance: none;
 }
-#category, #state{
+#category, #state, #managerId{
   background: url("/img/select_btn.png") no-repeat 90% 45%;
   background-size: 15px;
 }
 #user, #manager, #volunteer{
-  background: url("/img/scroll.png") no-repeat 90% 45%;
-  background-size: 10px;
+  background: url("/img/select_btn.png") no-repeat 90% 45%;
+  /*background: url("/img/scroll.png") no-repeat 90% 45%;*/
+  background-size: 15px;
 }
 #date, #start_date, #end_date{
   width: 22%;
@@ -169,7 +170,7 @@ select {
   /* 네이티브 외형 감추기 */
   -moz-appearance: none;
   appearance: none;
-  background: url("/img/calender.png") no-repeat 90% 45%;
+  /*background: url("/img/calender.png") no-repeat 90% 45%;*/
   background-size: 15px;
 }
 .sub1{
