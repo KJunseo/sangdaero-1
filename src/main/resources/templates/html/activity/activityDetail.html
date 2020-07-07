@@ -44,10 +44,10 @@
 			border: 0.5px solid #e6e6e6;
 		}
 		.edit {
-			margin-right: 30px;
+			margin-right: 15px;
 		}
 		#deadline, #volunteerTime, #content, #place, #delivery {
-			color: black;
+			color: #494949;
 			font-size: 16px;
 			font-weight: 400;
 		}
@@ -67,7 +67,7 @@
 		}
 		#clickedUsers, #clickedVolunteers, #users, #volunteers {
 			font-size: 14px;
-			color: black;
+			color: #494949;
 		}
 		#clickedUsers > li {
 			margin-top: 5px;
@@ -90,7 +90,7 @@
 			background: #FAEDE6
 		}
 		#sign {
-			color: black;
+			color: #494949;
 		}
 		@media (max-width:1170px){
 			#activity_map {
@@ -110,7 +110,7 @@
 			text-align: left;
 		}
 		.v_menuname{
-			color: #515151;
+			color: #494949;
 			font-weight: normal;
 			font-size: 16px;
 			clear: both;
@@ -440,13 +440,13 @@
 						<div class="inlinebox searchbox">
 							<p id="place" th:if="${activityDto.place}" th:text="${activityDto.place}"></p>
 							<div id="editPlace" name="place" style="display: none;">
-								<input type="text" id="address" placeholder="주소" th:value="${activityDto.place}" onclick="execPostcode()">
+								<input type="text" id="address" placeholder="주소" th:value="${activityDto.place}" style="margin-bottom: 0px;height: 20px" onclick="execPostcode()">
 								<input type="hidden" id="coordi_x">
 								<input type="hidden" id="coordi_y">
 							</div>
 						</div>
 					</div>
-					<div class="map" id="kakaomap" style="width:300px;height:300px;margin-left: 0px"></div>
+					<div class="map" id="kakaomap" style="width:300px;height:300px;margin-left: 0px;margin-top: 17px"></div>
 					<input type="hidden" id="original_place" th:value="${activityDto.place}">
 				</div>
 			</div>
