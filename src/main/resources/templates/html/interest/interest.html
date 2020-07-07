@@ -150,7 +150,7 @@
                                 <button class="active" name="button" th:if="${interest.on_off==0}">
                                     <img class="condition" src="/img/activation.png">
                                 </button>
-                                <a class="active" name="button" th:if="${interest.on_off==1}" th:onclick="'changeStatus(' + ${interest.id} + ')'">
+                                <a class="active" name="button" th:if="${interest.on_off==1}" th:onclick="'changeStatus(' + ${interest.id} + ',' + ${interest.count} +')'">
                                     <img class="condition" src="/img/deactivation.png">
                                 </a>
                             </form>
@@ -174,11 +174,15 @@
 
     <script type="text/javascript">
 
-        function changeStatus(id) {
-            if(confirm("관심있는 유저가 있습니다. 정말 비활성화 하시겠습니까?")==true) {
-                document.getElementById('active-form' + id).submit();
+        function changeStatus(id, cnt) {
+            if(cnt>0) {
+                if(confirm("관심있는 유저가 있습니다. 정말 비활성화 하시겠습니까?")==true) {
+                    document.getElementById('active-form' + id).submit();
+                } else {
+                    return false;
+                }
             } else {
-                return false;
+                document.getElementById('active-form' + id).submit();
             }
         }
         
