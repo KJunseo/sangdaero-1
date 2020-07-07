@@ -166,11 +166,11 @@
 
 		<div id="actManage" style="border-radius: 0px 0px 15px 15px">
 			<div class="row1">
-				<div class="endtimemenu inlinebox">
+				<div class="endtimemenu inlinebox" style="width:50%">
 					<div class="inlinebox">
 						<div class="sub_heading">카테고리</div>
 					</div>
-					<input type="text" id="category" name="category" th:value="${activityDto.interestCategory?.name}" disabled>
+					<input type="text" id="category" name="category" th:value="${activityDto.interestCategory?.name}" style="margin-left: 10px;" disabled>
 
 					<select id="editCategory" style="display: none;">
 						<option value="0">관심사를 선택하세요</option>
@@ -179,7 +179,7 @@
 								th:selected="${interest.id} == ${activityDto.interestCategory?.id}"></option>
 					</select>
 				</div>
-				<div class="endtimemenu inlinebox" style="margin-left: 80px">
+				<div class="endtimemenu inlinebox" style="margin-left: -10px">
 					<div class="inlinebox">
 						<div class="sub_heading">마감기한</div>
 					</div>
@@ -219,7 +219,7 @@
 				</div>
 				<div class="user_left" style="margin-bottom: 15px">
 <!--					<div class="inlinebox" style="width: 100px">-->
-						<div class="menu_name workertext" style="width: 80px">이용자</div>
+						<div class="menu_name workertext" style="width: 83px">이용자</div>
 <!--					</div>-->
 					<div class="workerblock" style="width: 80%">
 					<div class="inlinebox">
@@ -255,7 +255,7 @@
 				</div>
 
 				<div class="user_right" style="margin-bottom: 15px">
-					<div class="menu_name workertext" style="width: 80px">봉사자</div>
+					<div class="menu_name workertext" style="width: 83px">봉사자</div>
 
 					<div class="workerblock" style="width: 80%">
 						<div class="inlinebox">
@@ -400,7 +400,7 @@
 					<button id="editActivityGroupBtn" class="edit">편집</button>
 					<button id="cancelActivityGroupBtn" class="edit" style="display: none;">취소</button>
 				</div>
-				<div>
+				<div style="height:40px">
 					<div class="inlinebox">
 						<div class="menu_name">활동 시간</div>
 					</div>
@@ -424,7 +424,7 @@
 						<div class="inlinebox" style="float: left">
 							<div class="menu_name explain">상세설명</div>
 						</div>
-						<div class="inlinebox explain_textarea" style="float: left">
+						<div class="inlinebox explain_textarea" style="float: left;margin-top:5px">
 							<p id="content" th:if="${activityDto.content.isEmpty()}">세부내용 없음</p>
 							<p id="content" th:if="${activityDto.content != ''}" th:text="${activityDto.content}"></p>
 							<input type="textarea" id="explianation" name="explanation" th:value="${activityDto.content}" style="display: none;">
@@ -433,7 +433,7 @@
 				</div>
 
 				<div id="activity_map" class="user_right" style="top: 0px">
-					<div class="search_box">
+					<div class="search_box" style="margin-left: 0px">
 						<div class="inlinebox">
 							<div class="menu_name">장소</div>
 						</div>
@@ -446,7 +446,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="map" id="kakaomap" style="width:300px;height:300px;"></div>
+					<div class="map" id="kakaomap" style="width:300px;height:300px;margin-left: 0px"></div>
 					<input type="hidden" id="original_place" th:value="${activityDto.place}">
 				</div>
 			</div>

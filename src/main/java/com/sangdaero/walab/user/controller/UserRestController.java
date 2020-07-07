@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.sangdaero.walab.activity.dto.AppRequest;
+import com.sangdaero.walab.common.entity.InterestCategory;
+import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.user.application.dto.*;
 import com.sangdaero.walab.user.application.validator.NicknameValidator;
 import com.sangdaero.walab.user.application.validator.PhoneValidator;
@@ -28,6 +30,7 @@ public class UserRestController {
 	private final UserService mUserService;
 	private final NicknameValidator nicknameValidator;
 	private final PhoneValidator phoneValidator;
+	private final InterestRepository mInterestRepository;
 
 	@InitBinder("userNickname")
 	public void initBinder(WebDataBinder webDataBinder) {
@@ -163,5 +166,21 @@ public class UserRestController {
 		UserDto userDto = mUserService.createUser(userForm.getEmail(), userForm.getName());
 
 		mUserService.setBasicInfo(userDto.getId(), userForm.getPhone(), userForm.getNickname(), userForm.getPhoneAgree());
+	}
+
+	@PostMapping("/addInterest")
+	public void addInterest(@RequestBody AppRequest userForm) {
+		InterestCategory interest = mInterestRepository.findById(userForm.getInterestId()).orElse(null);
+		UserDto userDto = mUserService.createUser(userForm.getEmail(), userForm.getName());
+
+		mUserService.addInterest(userDto.getId(), interest);
+	}
+
+	@PostMapping("/removeInterest")
+	public void removeInterest(@RequestBody AppRequest userForm) {
+		InterestCategory interest = mInterestRepository.findById(userForm.getInterestId()).orElse(null);
+		UserDto userDto = mUserService.createUser(userForm.getEmail(), userForm.getName());
+
+		mUserService.removeInterest(userDto.getId(), interest);
 	}
 }

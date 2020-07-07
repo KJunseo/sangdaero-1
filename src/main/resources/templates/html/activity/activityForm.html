@@ -45,11 +45,15 @@
 			background: #EDFAF3;
 			border-radius: 10px;
 			width: 200px;
+			padding-left: 10px;
+			padding-bottom: 6px;
 		}
 		#clickedVolunteers > li {
 			margin-top: 5px;
 			border-radius: 10px;
 			width: 200px;
+			padding-left: 10px;
+			padding-bottom: 6px;
 		}
 		#clickedVolunteers > .list-group-item-warning {
 			background: #F4FAE5
@@ -71,6 +75,10 @@
 			width: 200px;
 		}
 
+		hr {
+			width: 99%;
+		}
+
 	</style>
 </head>
 <body>
@@ -88,24 +96,30 @@
 				<div class="infoContent">
 					<div class="subtitle">기본 정보</div>
 					<div class="sectionLeft">
-						<div class="subcontent">카테고리
+						<div class="subcontent">
+							카테고리
 							<div class="subsub">
 								<select id="category" th:field="*{interestCategoryId}">
 									<option value="0">관심사를 선택하세요</option>
 									<option th:each="interest : ${interests}" th:value="${interest.id}"
 											th:text="${interest.name}"></option>
 								</select>
-								<span th:if="${#fields.hasErrors('interestCategoryId')}">카테고리를 선택해주세요</span>
+								<div>
+									<small style="font-size: 10px;color: red" th:if="${#fields.hasErrors('interestCategoryId')}">카테고리를 선택해주세요</small>
+								</div>
 							</div>
 						</div>
 						<div class="subcontent" style="width: 600px">
 							<div style="float: left;">
+								<br th:if="${#fields.hasErrors('deadlineDate') or #fields.hasErrors('deadlineTime')}">
 								마감 기한
 							</div>
 							<div class="subsub" style="float: left;margin-left: 60px;width:400px">
 								<input id="date" type="date" th:field="*{deadlineDate}" style="width: 150px">
 								<input id="time" type="time" th:field="*{deadlineTime}" style="width: 120px">
-								<span th:if="${#fields.hasErrors('deadlineDate') or #fields.hasErrors('deadlineTime')}">마감 기한을 입력해주세요</span>
+								<div>
+									<small style="font-size: 10px;color: red" th:if="${#fields.hasErrors('deadlineDate') or #fields.hasErrors('deadlineTime')}">마감 기한을 입력해주세요</small>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -116,7 +130,9 @@
 							</div>
 							<div class="subsub2" style="float: left;margin-left: 93px;width:290px">
 								<input id="titletext" type="text" th:field="*{title}" placeholder="제목을 입력하세요.">
-								<span th:if="${#fields.hasErrors('title')}">2자 이상 입력해주세요</span>
+								<div>
+									<small style="font-size: 10px;color: red" th:if="${#fields.hasErrors('title')}">2자 이상 입력해주세요</small>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -194,7 +210,9 @@
 							<div class="subsub2 sub1" style="float: left; margin-left: 53px;width: 700px">
 								<input id="start_date" type="date" th:field="*{startDate}" style="width: 150px"><input id="start_time" type="time" th:field="*{startTime}" style="width: 120px"><span id="and"> ~ </span>
 								<input id="end_date" type="date" th:field="*{endDate}" style="width: 150px"><input id="end_time" type="time" th:field="*{endTime}" style="width: 120px">
-								<span th:if="${#fields.hasErrors('startDate') or #fields.hasErrors('startTime') or #fields.hasErrors('endDate') or #fields.hasErrors('endTime') }">활동시간을 입력해주세요</span>
+								<div>
+									<small style="font-size: 10px;color: red" th:if="${#fields.hasErrors('startDate') or #fields.hasErrors('startTime') or #fields.hasErrors('endDate') or #fields.hasErrors('endTime') }">활동시간을 입력해주세요</small>
+								</div>
 							</div>
 						</div>
 					</div>

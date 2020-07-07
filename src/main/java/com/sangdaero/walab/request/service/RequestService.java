@@ -273,10 +273,10 @@ public class RequestService {
 		activityForm.setTitle(requestDto.getTitle());
 		activityForm.setInterestCategoryId(requestDto.getInterestCategory().getId());
 		activityForm.setContent(requestDto.getContent());
-		activityForm.setStartDate(requestDto.getStartTime().toLocalDate().toString());
-		activityForm.setStartTime(requestDto.getStartTime().toLocalTime().toString());
-		activityForm.setEndDate(requestDto.getEndTime().toLocalDate().toString());
-		activityForm.setEndTime(requestDto.getEndTime().toLocalTime().toString());
+		activityForm.setStartDate((requestDto.getStartTime()!=null)?requestDto.getStartTime().toLocalDate().toString():null);
+		activityForm.setStartTime((requestDto.getStartTime()!=null)?requestDto.getStartTime().toLocalTime().toString():null);
+		activityForm.setEndDate((requestDto.getEndTime()!=null)?requestDto.getEndTime().toLocalDate().toString():null);
+		activityForm.setEndTime((requestDto.getEndTime()!=null)?requestDto.getEndTime().toLocalTime().toString():null);
 		activityForm.setRequestId(requestDto.getId());
 		activityForm.setFile(requestDto.getProductImage());
 

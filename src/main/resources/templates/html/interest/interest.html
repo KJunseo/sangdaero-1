@@ -51,8 +51,8 @@
 
         <div class="down">
             <div class="addinterest">
-                <div id="addtext">관심사 추가</div>
                 <form action="/interest/add" th:object="${interestDto}" method="post" style="width: 500px" novalidate>
+                    <div id="addtext">관심사 추가</div>
                     <div class="interestadd">
                         <input id="name" type="text" name="name" placeholder="관심사 이름을 2글자 이상 입력해주세요." aria-describedby="nameHelp" required minlength="2">
                     </div>
@@ -61,11 +61,14 @@
                     <!--                        2글자 이상 입력해주세요.-->
                     <!--                    </small>-->
                     <!--                    <small class="invalid-feedback">2글자 이상의 이름을 입력해주세요</small>-->
-                    <!--                    <small class="form-text text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</small>-->
+
                     <!--                    <br>-->
                     <button id="register" type="submit" name="button">
                         <img src="/img/add_interest.png">
                     </button>
+                    <div style="margin-top:-10px;margin-bottom:15px">
+                        <small th:if="${#fields.hasErrors('name')}" style="font-size: 13px;color:red" th:errors="*{name}">Name Error</small>
+                    </div>
                     <!--                    <input type="submit" value="관심사 추가">-->
                 </form>
             </div>

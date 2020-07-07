@@ -176,7 +176,8 @@ img {
   float: right;
   position: relative;
   right: -10px;
-  margin-top: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 #submit {
