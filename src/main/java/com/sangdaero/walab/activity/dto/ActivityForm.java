@@ -51,6 +51,8 @@ public class ActivityForm {
 
     String place;
 
+    String placeDetail;
+
     @NotNull
     @Size(min=10)
     String deadlineDate;

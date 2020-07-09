@@ -43,6 +43,7 @@
 								<option th:selected="${status==4}" value="4">활동 진행 중</option>
 								<option th:selected="${status==5}" value="5">활동 완료</option>
 								<option th:selected="${status==6}" value="6">취소된 활동</option>
+								<option th:selected="${status==7}" value="7">물건 거절</option>
 							</select>
 						</div>
 						<div class="selectm">
@@ -86,12 +87,13 @@
 								</a>
 							</td>
 							<td class="status">
-								<img th:if="${activity.status == 0}" class="condition" src="/img/b_matching.png">
-								<span th:if="${activity.status == 1}"><img class="condition" src="/img/matching.png"></span>
-								<span th:if="${activity.status == 2}"><img class="condition" src="/img/a_matching.png"></span>
-								<span th:if="${activity.status == 3}"><img class="condition" src="/img/activiting.png"></span>
-								<span th:if="${activity.status == 4}"><img class="condition" src="/img/a_activiting.png"></span>
-								<span th:if="${activity.status == 5}"><img class="condition" src="/img/activity_cancle.png"></span>
+								<img th:if="${activity.status == 0}" class="list-condition" src="/img/b_matching.png">
+								<span th:if="${activity.status == 1}"><img class="list-condition" src="/img/matching.png"></span>
+								<span th:if="${activity.status == 2}"><img class="list-condition" src="/img/a_matching.png"></span>
+								<span th:if="${activity.status == 3}"><img class="list-condition" src="/img/activiting.png"></span>
+								<span th:if="${activity.status == 4}"><img class="list-condition" src="/img/a_activiting.png"></span>
+								<span th:if="${activity.status == 5}"><img class="list-condition" src="/img/activity_cancle.png"></span>
+								<span th:if="${activity.status == 6}"><img class="list-condition" src="/img/tag_thing.png"></span>
 							</td>
 							<td id="actdate">
 								<span th:text="${#temporals.format(activity.regDate, 'yyyy-MM-dd HH:mm')}"></span>
