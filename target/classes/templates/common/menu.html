@@ -15,7 +15,7 @@
 </header>
 
 <div id="sidebar" th:fragment="menu">
-    <ul>
+    <ul class="authenticated" style="display:none">
         <li class="firstMenu menu"><span>활동 관리</span> <img src = "/img/arrow.png"></li>
         <ul class = "submenu">
             <li class="secondMenu"><a th:href="@{/activity}">- 활동목록</a><br><a th:href="@{/request}">- 들어온 요청</a></li>
@@ -36,15 +36,21 @@
 
         function getStatus(){
             $.get("/userdata/getBasicInfo", function(data){
-                var innerHtml = "";
-                if(data.status == 1){
-                    innerHtml = "<img id='onoff' style='pointer-events: auto' src='/img/on.png' alt='on'>";
+                if(data.userType==1){
+                    $(".authenticated").show();
+                    var innerHtml = "";
+                    if(data.status == 1){
+                        innerHtml = "<img id='onoff' style='pointer-events: auto' src='/img/on.png' alt='on'>";
+                    }
+                    else{
+                        innerHtml = "<img id='onoff' style='pointer-events: auto' src='/img/off.png' alt='off'>";
+                    }
+                    $('#userStatus').html(innerHtml);
+                    addClickListener();
                 }
-                else{
-                    innerHtml = "<img id='onoff' style='pointer-events: auto' src='/img/off.png' alt='off'>";
+                else if(location.pathname!="/"){
+                    location.replace("/");
                 }
-                $('#userStatus').html(innerHtml);
-                addClickListener();
             });
         }
 

@@ -131,7 +131,7 @@
 							<div class="subsub2" style="float: left;margin-left: 93px;width:290px">
 								<input id="titletext" type="text" th:field="*{title}" placeholder="제목을 입력하세요.">
 								<div>
-									<small style="font-size: 10px;color: red" th:if="${#fields.hasErrors('title')}">2자 이상 입력해주세요</small>
+									<small style="font-size: 10px;color: red" th:if="${#fields.hasErrors('title')}">2자 ~ 22자 사이로 입력해주세요</small>
 								</div>
 							</div>
 						</div>

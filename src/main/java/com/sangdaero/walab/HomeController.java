@@ -1,14 +1,24 @@
 package com.sangdaero.walab;
 
+import com.sangdaero.walab.user.application.dto.UserDto;
+import com.sangdaero.walab.user.application.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
+	private final UserService mUserService;
+
 	@GetMapping("/")
-	public String homePage() {
-		return "redirect:/activity";
+	public String homePage(@AuthenticationPrincipal OAuth2User principal) {
+		UserDto userDto = mUserService.getUser(principal);
+
+		return (userDto.getUserType()==1)?"redirect:/activity":"html/index.html";
 	}
 
 	@GetMapping("/login")
