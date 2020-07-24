@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.transaction.Transactional;
 
+import com.sangdaero.walab.activity.dto.*;
 import com.sangdaero.walab.common.entity.*;
 import com.sangdaero.walab.common.notification.repository.NotificationRepository;
 import com.sangdaero.walab.mapper.repository.UserInterestRepository;
@@ -28,10 +29,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sangdaero.walab.activity.domain.repository.ActivityRepository;
-import com.sangdaero.walab.activity.dto.ActivityDto;
-import com.sangdaero.walab.activity.dto.ActivityPeopleDto;
-import com.sangdaero.walab.activity.dto.ActivityUserDto;
-import com.sangdaero.walab.activity.dto.UserStatusDto;
 import com.sangdaero.walab.common.file.repository.FileRepository;
 import com.sangdaero.walab.interest.domain.repository.InterestRepository;
 import com.sangdaero.walab.mapper.repository.UserEventMapperRepository;
@@ -940,4 +937,27 @@ public class ActivityService {
 		}
 
 
+	public List<EachUserActivity> getEachUserActivityList(Long id) {
+		List<UserEventMapper> mapper = mUserEventMapperRepository.findAllByUserIdOrderByModDate(id);
+		List<EachUserActivity> activities = new ArrayList<>();
+
+		for(UserEventMapper m : mapper) {
+			EventEntity event = m.getEvent();
+
+			if(event.getStatus()!=4) continue;
+
+			EachUserActivity activity = new EachUserActivity();
+
+			activity.setId(event.getId());
+			activity.setEventCategory(event.getEventCategory());
+			activity.setTitle(event.getTitle());
+			activity.setInterestCategory(event.getInterestCategory());
+			activity.setCompleteTime(event.getEndTime());
+			activity.setVolunteerTime(m.getVolunteerTime());
+
+			activities.add(activity);
+		}
+
+		return activities;
+	}
 }
