@@ -201,6 +201,8 @@ public class ActivityService {
 				activityVolunteer.setMemo(userEvent.getMemo());
         		activityVolunteer.setRegDate(userEvent.getRegDate());
         		activityVolunteer.setModDate(userEvent.getModDate());
+        		activityVolunteer.setStartImgDate(userEvent.getStartImgDate());
+				activityVolunteer.setEndImgDate(userEvent.getEndImgDate());
         		
         		activityVolunteers.add(activityVolunteer);
         		volunteerIds.add(userEvent.getUser().getId());
