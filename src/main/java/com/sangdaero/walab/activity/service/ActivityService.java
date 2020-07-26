@@ -965,7 +965,7 @@ public class ActivityService {
 
 	public List<ActivityDto> getAllActivities() {
 
-    	List<EventEntity> lists = mActivityRepository.findAll();
+    	List<EventEntity> lists = mActivityRepository.findAllByOrderByStatusAscModDateDesc();
 		List<ActivityDto> ret = new ArrayList<>();
 
 		for(EventEntity activity : lists) {
