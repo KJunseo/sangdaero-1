@@ -962,4 +962,16 @@ public class ActivityService {
 
 		return activities;
 	}
+
+	public List<ActivityDto> getAllActivities() {
+
+    	List<EventEntity> lists = mActivityRepository.findAll();
+		List<ActivityDto> ret = new ArrayList<>();
+
+		for(EventEntity activity : lists) {
+			ret.add(this.convertEventEntityToActivityDto(activity));
+		}
+
+		return ret;
+	}
 }
