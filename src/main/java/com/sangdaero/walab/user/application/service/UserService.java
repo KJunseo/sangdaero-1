@@ -470,4 +470,17 @@ public class UserService extends OidcUserService {
         }
     }
 
+    public Integer getMyRank(Long id) {
+
+        List<User> list = mUserRepository.findAllByOrderByVolunteerTimeDesc();
+        int rank = 1;
+
+        for(User u : list) {
+            if(u.getId().equals(id)) break;
+
+            rank++;
+        }
+
+        return rank;
+    }
 }

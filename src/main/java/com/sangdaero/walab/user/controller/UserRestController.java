@@ -140,7 +140,11 @@ public class UserRestController {
 
 		UserDto userDto = mUserService.createUser(email, name);
 
-		return mUserService.getUser(userDto.getId());
+		UserDetailDto ret = mUserService.getUser(userDto.getId());
+
+		ret.setRank(mUserService.getMyRank(userDto.getId()));
+
+		return ret;
 	}
 
 	@PostMapping("/modifyNickName")

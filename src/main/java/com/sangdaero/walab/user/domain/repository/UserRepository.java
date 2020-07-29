@@ -47,4 +47,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<SimpleUser> findAllByOrderByName();
 
     Page<User> findAllByOrderByVolunteerTimeDesc(Pageable pageable);
+
+    List<User> findAllByOrderByVolunteerTimeDesc();
 }

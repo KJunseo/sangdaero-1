@@ -33,6 +33,8 @@ public class UserDetailDto {
     private Byte isDummy;
     private Byte phoneAgree;
 
+    private Integer rank;
+
     public User toEntity() {
         User user = User.builder()
                 .id(id)
@@ -51,7 +53,7 @@ public class UserDetailDto {
     @Builder
     public UserDetailDto(Long id, String name, String nickname, String socialId, String phone,
                          Byte userType, Integer volunteerTime, Set<String> interestName, Byte isDummy,
-                         Byte phoneAgree) {
+                         Byte phoneAgree, Integer rank) {
         this.id=id;
         this.name=name;
         this.nickname=nickname;
@@ -62,6 +64,7 @@ public class UserDetailDto {
         this.interestName=interestName;
         this.isDummy=isDummy;
         this.phoneAgree = phoneAgree;
+        this.rank = rank;
     }
 
 }
