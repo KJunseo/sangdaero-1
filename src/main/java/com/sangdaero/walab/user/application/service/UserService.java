@@ -483,4 +483,9 @@ public class UserService extends OidcUserService {
 
         return rank;
     }
+
+    public Integer getTotalUser() {
+
+	    return mUserRepository.findAll().size();
+    }
 }

@@ -142,6 +142,7 @@ public class UserRestController {
 
 		UserDetailDto ret = mUserService.getUser(userDto.getId());
 
+		ret.setTotalUser(mUserService.getTotalUser());
 		ret.setRank(mUserService.getMyRank(userDto.getId()));
 
 		return ret;
