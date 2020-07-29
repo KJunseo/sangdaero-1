@@ -31,4 +31,5 @@ public class AppRequest {
 
     private Long interestId;
 
+    private String token;
 }
