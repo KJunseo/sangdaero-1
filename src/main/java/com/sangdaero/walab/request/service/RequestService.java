@@ -18,6 +18,7 @@ import com.sangdaero.walab.common.file.repository.FileRepository;
 import com.sangdaero.walab.common.notification.repository.NotificationRepository;
 import com.sangdaero.walab.common.push.MakeJSON;
 import com.sangdaero.walab.common.push.Push;
+import com.sangdaero.walab.user.application.dto.SimpleUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -347,6 +348,7 @@ public class RequestService {
 			else {
 				activityForm.setUserId(userId);
 			}
+			activityForm.setInterestCategoryId(requestDto.getInterestCategory().getId());
 		}
 		else {
 			InterestCategory interestCategory = mInterestRepository.findByNameContaining("전달");
@@ -355,7 +357,6 @@ public class RequestService {
 			}
 			else {
 				activityForm.setInterestCategoryId(requestDto.getInterestCategory().getId());
-
 			}
 		}
 
@@ -364,5 +365,32 @@ public class RequestService {
 
 	public Long getWaitingRequestCount() {
 		return mRequestRepository.countByStatus((byte) 0);
+	}
+
+	public void sendAlarmtoManagers(List<SimpleUser> managerList) {
+		if(managerList!=null) {
+			for(SimpleUser manager: managerList) {
+				Notification notification = new Notification();
+				notification.setUser(convertSimpleUserToUser(manager));
+				notification.setMessage("새로운 요청이 등록되었습니다 [대기 요청 수: "+ getWaitingRequestCount() +"]");
+				mNotificationRepository.save(notification);
+
+				MakeJSON makeJson = new MakeJSON();
+				Push push = new Push();
+				String pushJson = "";
+				List<Device> devices = manager.getDevices();
+
+				if(devices!=null) {
+					for(Device device: devices) {
+						pushJson = makeJson.makePush(device.getDeviceToken(), "새로운 요청 알림", "새로운 요청이 등록되었습니다 [대기 요청 수: "+ getWaitingRequestCount() +"]");
+						push.sendPush(pushJson);
+					}
+				}
+			}
+		}
+	}
+
+	public User convertSimpleUserToUser(SimpleUser simpleUser) {
+		return mUserRepository.findById(simpleUser.getId()).orElse(null);
 	}
 }

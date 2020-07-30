@@ -18,7 +18,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 //    List<SimpleUser> findTop5ByOrderByVolunteerTimeDesc();
 
     List<User> findTop5ByOrderByVolunteerTimeDesc();
-    
+
+    @EntityGraph(attributePaths = { "devices" })
     List<SimpleUser> findAllByUserTypeOrderByName(byte userType);
 
 	User findBySocialId(String socialId);

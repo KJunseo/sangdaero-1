@@ -1,6 +1,7 @@
 package com.sangdaero.walab.request.controller;
 
 import com.sangdaero.walab.request.dto.RequestDto;
+import com.sangdaero.walab.user.application.dto.SimpleUser;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,8 @@ import com.sangdaero.walab.request.service.RequestService;
 import com.sangdaero.walab.user.application.dto.UserDto;
 import com.sangdaero.walab.user.application.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/requestdata")
@@ -40,6 +43,10 @@ public class RequestRestController {
 	public String newRegister(@RequestBody AppRequest newRegisterForm) {
 		UserDto userDto = mUserService.createUser(newRegisterForm.getEmail(), newRegisterForm.getName());
 		mRequestService.createRequest(null, newRegisterForm.getId(), userDto, null, (byte) 1, newRegisterForm.getStartTime() , newRegisterForm.getEndTime() ,newRegisterForm.getTitle(), newRegisterForm.getMemo());
+
+		List<SimpleUser> managerList = mUserService.getSimpleUserList("manager");
+		mRequestService.sendAlarmtoManagers(managerList);
+
 		return "success";
 	}
 
@@ -51,6 +58,10 @@ public class RequestRestController {
 							 @RequestParam("title") String title, @RequestParam("memo") String memo) {
 		UserDto userDto = mUserService.createUser(email, name);
 		mRequestService.createRequest(null, id, userDto, image, (byte) 1, startTime, endTime, title, memo);
+
+		List<SimpleUser> managerList = mUserService.getSimpleUserList("manager");
+		mRequestService.sendAlarmtoManagers(managerList);
+
 		return "success";
 	}
 	
