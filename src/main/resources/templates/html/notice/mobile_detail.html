@@ -7,11 +7,13 @@
     <style>
         #notice_content {
             color: #494949;
-            width: 80%;
-            height: 300px;
-            border: 1px solid #a5a5a5;
+            width: 90%;
+            height: 480px;
+            /*border: 1px solid #a5a5a5;*/
             float: left;
             padding: 10px;
+            margin-left: 5px;
+            margin-top: 10px;
         }
         body {
             width: 100%;
@@ -35,69 +37,89 @@
         }
         input {
             text-align: center;
-            padding: 0px;
+            padding: 10px;
+            border-radius: unset;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
 
 <div id="main">
-    <h4>공지 상세</h4>
 
-    <div id="actInfo" style="height: 580px;padding-left: 35px">
+    <div id="actInfo" style="height: 620px;padding-left: 0px;overflow-x: hidden">
         <input type="hidden" id="noticeId" th:value="${noticeDto.id}">
-        <br>
-        <div class="section1">
-            <div style="float: left;">
-                <div class="key">
-                    제목
-                </div>
-                <div class="content" style="width: 55%">
-                    <input type="text" name="title" th:value="${noticeDto.title}" style="width: 100%" disabled >
-                </div>
+        <div style="margin-top: 5px">
+            <div style="float: left;width: 65%;">
+                <input type="text" name="title" th:value="${noticeDto.title}"
+                       style="width: 90%;margin-left: 5px;text-align: left;border-right: 0px;border-top: 0px;border-left: 0px" disabled>
             </div>
-            <div style="float: left;">
-                <div class="key">
-                    조회수
-                </div>
-                <div class="content" style="width: 55%">
-                    <input type="text" name="view" th:value="${noticeDto.view}" style="width: 100%" disabled>
-                </div>
+            <div style="float: left;width: 30%">
+                <input type="text" value="공지사항" name="topCategory"
+                       style="width: 90%;text-align: right;border-top: 0px;border-right: 0px" disabled>
             </div>
         </div>
-        <br>
-        <div class="section1">
-            <div style="float: left;">
-                <div class="key">
-                    작성자
-                </div>
-                <div class="content" style="width: 55%">
-                    <input type="text" name="writer" th:value="${noticeDto.writer}" style="width: 100%" disabled>
-                </div>
+        <div>
+            <div style="float: left;width: 65%;text-align: left">
+                <input type="text" name="date" th:value="${#temporals.format(noticeDto.modDate, 'yyyy-MM-dd HH:mm')}"
+                       style="width: 100%;margin-left: 5px;text-align: left;border-top: 0px;border-left: 0px;" disabled>
             </div>
-            <div style="float: left;">
-                <div class="key">
-                    작성일
-                </div>
-                <div class="content" style="width: 55%">
-                    <input type="text" name="date" th:value="${#temporals.format(noticeDto.modDate, 'yyyy-MM-dd HH:mm')}" style="width: 100%" disabled>
-                </div>
+            <div style="float: left;width: 30%;text-align: right">
+                <input type="text" name="writer" th:value="${noticeDto.writer}"
+                       style="width: 90%;text-align: right;border-right: 0px;border-top: 0px" disabled>
             </div>
         </div>
+<!--        <div class="section1">-->
+<!--            <div style="float: left;">-->
+<!--                <div class="key">-->
+<!--                    제목-->
+<!--                </div>-->
+<!--                <div class="content" style="width: 55%">-->
+<!--                    <input type="text" name="title" th:value="${noticeDto.title}" style="width: 100%" disabled >-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div style="float: left;">-->
+<!--                <div class="key">-->
+<!--                    조회수-->
+<!--                </div>-->
+<!--                <div class="content" style="width: 55%">-->
+<!--                    <input type="text" name="view" th:value="${noticeDto.view}" style="width: 100%" disabled>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--        <div class="section1">-->
+<!--            <div style="float: left;">-->
+<!--                <div class="key">-->
+<!--                    작성자-->
+<!--                </div>-->
+<!--                <div class="content" style="width: 55%">-->
+<!--                    <input type="text" name="writer" th:value="${noticeDto.writer}" style="width: 100%" disabled>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div style="float: left;">-->
+<!--                <div class="key">-->
+<!--                    작성일-->
+<!--                </div>-->
+<!--                <div class="content" style="width: 55%">-->
+<!--                    <input type="text" name="date" th:value="${#temporals.format(noticeDto.modDate, 'yyyy-MM-dd HH:mm')}" style="width: 100%" disabled>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <br>-->
+<!--        <div class="section1">-->
+<!--            <div>-->
+<!--                <div class="key">-->
+<!--                    카테고리-->
+<!--                </div>-->
+<!--                <div class="content" style="width: 55%">-->
+<!--                    <input type="text" value="공지사항" name="topCategory" style="width: 100%" disabled>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <br>
-        <div class="section1">
-            <div>
-                <div class="key">
-                    카테고리
-                </div>
-                <div class="content" style="width: 55%">
-                    <input type="text" value="공지사항" name="topCategory" style="width: 100%" disabled>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="editor_wrap">
-            <div class="key">내용</div>
+        <div class="editor_wrap" style="margin-top: 5px">
+<!--            <div class="key">내용</div>-->
             <div id="notice_content"></div>
             <input id="content_value" type="hidden" th:value="${noticeDto.content}">
 

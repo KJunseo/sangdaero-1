@@ -26,6 +26,11 @@ public class HomeController {
 		return "html/login.html";
 	}
 
+	@GetMapping("/info")
+	public String information() {
+		return "html/information";
+	}
+
 //	@GetMapping("/test/map")
 //	public String naverMap() {
 //		return "html/request/naverMap";
